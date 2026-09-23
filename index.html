@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Umber — эссе с разбором</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#211409;
+    --bg-2:#2b1a0f;
+    --panel:#332215;
+    --panel-2:#3c2a1a;
+    --line:#4a3624;
+    --text:#f1e3ce;
+    --text-dim:#c6ae8e;
+    --text-faint:#8c795f;
+    --gold:#d1a34a;
+    --gold-soft:rgba(209,163,74,0.22);
+    --gold-soft-active:rgba(209,163,74,0.4);
+    --copper:#c07a45;
+    --serif:"Fraunces", Georgia, "Times New Roman", serif;
+    --sans:"Karla", -apple-system, "Segoe UI", Roboto, sans-serif;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%;}
+  body{
+    height:100%;
+    margin:0;
+    background:var(--bg);
+    background-image:
+      radial-gradient(ellipse 60% 40% at 85% -10%, rgba(209,163,74,0.08), transparent 60%),
+      radial-gradient(ellipse 50% 30% at -10% 100%, rgba(192,122,69,0.06), transparent 60%);
+    color:var(--text);
+    font-family:var(--sans);
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    padding:env(safe-area-inset-top,0px) 20px 0;
+    position:sticky; top:0; z-index:20;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    max-width:1040px;margin:0 auto;
+    padding:18px 0 14px;
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, #6b4326, #2c1a0d 72%);
+    border:1px solid var(--line);
+    flex:none;
+  }
+  .brand h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:1.5rem;
+    margin:0;
+    letter-spacing:0.01em;
+    color:var(--text);
+  }
+  .tagline{
+    color:var(--text-dim);
+    font-size:0.92rem;
+    margin:0;
+  }
+  .legend{
+    max-width:1040px;margin:0 auto;
+    padding-bottom:14px;
+    display:flex;gap:18px;flex-wrap:wrap;
+    font-size:0.82rem;
+    color:var(--text-faint);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:13px;height:13px;border-radius:3px;display:inline-block;flex:none;}
+  .swatch.h{background:var(--gold-soft);border:1px solid var(--gold);}
+  .swatch.u{background:transparent;border-bottom:2px dotted var(--copper);width:16px;height:0;}
+
+  .mode-switch{
+    max-width:1040px;margin:0 auto;
+    display:flex;gap:8px;
+    padding-bottom:12px;
+  }
+  .mode-btn{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text-dim);
+    font-family:var(--sans);
+    font-size:0.88rem;
+    padding:8px 14px;
+    border-radius:99px;
+    cursor:pointer;
+  }
+  .mode-btn:hover{color:var(--text);}
+  .mode-btn.active{
+    background:var(--gold-soft-active);
+    color:var(--gold);
+    border-color:var(--gold);
+  }
+
+  /* ---------- task 1 structures view ---------- */
+  #task1View{max-width:1040px;margin:0 auto;padding:0 20px 140px;}
+  .t1-cat{
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:12px;
+    background:var(--panel);
+    overflow:hidden;
+  }
+  .t1-cat summary{
+    list-style:none;
+    cursor:pointer;
+    padding:14px 18px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--serif);
+    font-size:1.08rem;
+    font-weight:600;
+    color:var(--text);
+  }
+  .t1-cat summary::-webkit-details-marker{display:none;}
+  .t1-cat summary .count{
+    font-family:var(--sans);
+    font-size:0.78rem;
+    font-weight:400;
+    color:var(--text-faint);
+  }
+  .t1-cat summary::after{
+    content:"+";
+    font-family:var(--sans);
+    color:var(--text-faint);
+    font-size:1.1rem;
+    margin-left:10px;
+  }
+  .t1-cat[open] summary::after{content:"–";}
+  .t1-cat-body{padding:2px 18px 14px;}
+  .s-card{
+    padding:12px 0;
+    border-top:1px solid var(--line);
+  }
+  .s-card:first-child{border-top:none;}
+  .s-structure{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--gold);
+    font-size:1rem;
+    margin:0 0 6px;
+    line-height:1.5;
+  }
+  .s-example{
+    font-family:var(--sans);
+    color:var(--text);
+    font-size:0.92rem;
+    margin:0 0 6px;
+    line-height:1.55;
+  }
+  .s-example::before{content:"— ";color:var(--text-faint);}
+  .s-note{
+    color:var(--text-dim);
+    font-size:0.85rem;
+    margin:0;
+    line-height:1.5;
+  }
+
+  /* ---------- layout ---------- */
+  .layout{
+    max-width:1040px;width:100%;
+    margin:0 auto;
+    padding:22px 20px 140px;
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:28px;
+    flex:1;
+  }
+  nav.tabs{
+    display:flex;flex-direction:column;gap:6px;
+    position:sticky;
+    top:108px;
+    align-self:start;
+  }
+  nav.tabs button{
+    text-align:left;
+    background:transparent;
+    border:1px solid transparent;
+    color:var(--text-dim);
+    font-family:var(--sans);
+    font-size:0.95rem;
+    padding:10px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  nav.tabs button .en{
+    display:block;
+    font-size:0.74rem;
+    color:var(--text-faint);
+    margin-top:2px;
+  }
+  nav.tabs button:hover{background:var(--panel);color:var(--text);}
+  nav.tabs button.active{
+    background:var(--panel-2);
+    color:var(--gold);
+    border-color:var(--line);
+  }
+  nav.tabs button.active .en{color:var(--text-dim);}
+
+  main{min-width:0;}
+  .essay-head{margin-bottom:18px;}
+  .essay-head h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-style:italic;
+    font-size:1.7rem;
+    margin:0 0 6px;
+    color:var(--text);
+  }
+  .essay-head p{
+    margin:0;
+    color:var(--text-dim);
+    font-size:0.95rem;
+    max-width:62ch;
+  }
+
+  article p{
+    font-family:var(--serif);
+    font-size:1.08rem;
+    line-height:1.75;
+    color:var(--text);
+    max-width:70ch;
+    margin:0 0 1.3em;
+  }
+
+  .glossary{
+    max-width:70ch;
+    margin-top:8px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+  .glossary h3{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:600;
+    color:var(--gold);
+    font-size:1.15rem;
+    margin:0 0 12px;
+  }
+  .glossary ol{
+    margin:0;
+    padding-left:1.4em;
+    color:var(--text-dim);
+  }
+  .glossary li{
+    margin-bottom:10px;
+    line-height:1.6;
+    font-size:0.95rem;
+  }
+  .g-phrase{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--text);
+  }
+  .g-dash{color:var(--text-faint);}
+
+  .mark{
+    cursor:pointer;
+    border-radius:3px;
+    padding:0 1px;
+    transition:background 0.15s;
+  }
+  .mark-h{
+    background:var(--gold-soft);
+    box-shadow:inset 0 -2px 0 0 var(--gold);
+  }
+  .mark-h:hover, .mark-h.active{background:var(--gold-soft-active);}
+  .mark-u{
+    border-bottom:2px dotted var(--copper);
+  }
+  .mark-u:hover, .mark-u.active{color:var(--copper);}
+
+  /* ---------- mobile tab chips ---------- */
+  .chip-row{display:none;}
+
+  /* ---------- note bar ---------- */
+  .notebar{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:30;
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));
+  }
+  .notebar-inner{
+    max-width:1040px;margin:0 auto;
+    display:flex;align-items:flex-start;gap:14px;
+  }
+  .notebar-text{flex:1;min-width:0;}
+  .notebar-phrase{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--gold);
+    font-size:0.98rem;
+    margin:0 0 3px;
+  }
+  .notebar-note{
+    margin:0;
+    color:var(--text-dim);
+    font-size:0.92rem;
+    line-height:1.5;
+  }
+  .notebar-hint{color:var(--text-faint);}
+  .notebar-close{
+    background:none;border:none;color:var(--text-faint);
+    font-size:1.1rem;cursor:pointer;line-height:1;
+    padding:4px;flex:none;
+  }
+  .notebar-close:hover{color:var(--text);}
+
+  footer{
+    text-align:center;
+    color:var(--text-faint);
+    font-size:0.78rem;
+    padding:10px 20px 100px;
+  }
+
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;padding:16px 16px 150px;gap:14px;}
+    nav.tabs{display:none;}
+    .chip-row{
+      display:flex;gap:8px;overflow-x:auto;
+      padding-bottom:4px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .chip-row button{
+      flex:none;
+      background:var(--panel);
+      border:1px solid var(--line);
+      color:var(--text-dim);
+      font-family:var(--sans);
+      font-size:0.86rem;
+      padding:8px 13px;
+      border-radius:99px;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+    .chip-row button.active{
+      background:var(--gold-soft-active);
+      color:var(--gold);
+      border-color:var(--gold);
+    }
+    .essay-head h2{font-size:1.4rem;}
+    article p{font-size:1.02rem;}
+    .legend{font-size:0.76rem;gap:12px;}
+  }
+
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <h1>Umber</h1>
+    </div>
+    <p class="tagline">IELTS Writing — эссе и структуры с переводом и разбором</p>
+  </div>
+  <div class="mode-switch" id="modeSwitch">
+    <button id="modeEssays" class="mode-btn active">Эссе · Task 2</button>
+    <button id="modeTask1" class="mode-btn">Структуры · Task 1</button>
+  </div>
+  <div class="legend" id="legendEssays">
+    <span><span class="swatch h" aria-hidden="true"></span> заливка — объяснение фразы</span>
+    <span><span class="swatch u" aria-hidden="true"></span> пунктир — перевод слова</span>
+    <span>Нажмите на выделенный текст, чтобы увидеть разбор внизу</span>
+  </div>
+  <div class="legend" id="legendTask1" hidden>
+    <span>Готовые формулы для описания графиков и диаграмм — сгруппированы по темам, каждая с примером и переводом</span>
+  </div>
+</header>
+
+<div class="layout" id="essaysView">
+  <nav class="tabs" id="tabs" aria-label="Список эссе"></nav>
+
+  <main>
+    <div class="chip-row" id="chipRow" aria-label="Список эссе"></div>
+    <div class="essay-head">
+      <h2 id="essayTitle"></h2>
+      <p id="essayPrompt"></p>
+    </div>
+    <article id="essayBody"></article>
+    <section class="glossary" id="essayGlossary"></section>
+  </main>
+</div>
+
+<div id="task1View" hidden></div>
+
+<footer>Umber · личный тренажёр по письму для подготовки к IELTS</footer>
+
+<div class="notebar" id="notebar">
+  <div class="notebar-inner">
+    <div class="notebar-text">
+      <p class="notebar-phrase" id="notePhrase" hidden></p>
+      <p class="notebar-note" id="noteText"><span class="notebar-hint">Нажмите на выделенный текст, чтобы увидеть перевод или объяснение</span></p>
+    </div>
+    <button class="notebar-close" id="noteClose" aria-label="Скрыть подсказку" hidden>✕</button>
+  </div>
+</div>
+
+<script>
+// ---- data ---------------------------------------------------------------
+// each paragraph is an array of segments: a plain string, or
+// {t:text, k:'h'|'u', n:note}  — h = explanation (highlight), u = translation (underline)
+
+const essays = [
+{
+  id:'money',
+  navRu:'Деньги',
+  title:'Is money the most important motivator?',
+  prompt:'Согласны ли вы, что деньги — главный фактор мотивации на работе?',
+  paragraphs:[
+    [
+      {t:"The question of whether", k:'h', n:"Клише для вступления: «Вопрос о том, ...» — задаёт спорную тему для рассуждения."},
+      " money is the most important factor motivating people in the workplace has become a subject of considerable debate. While a competitive salary can undoubtedly ",
+      {t:"be a powerful incentive", k:'h', n:"«быть мощным стимулом» — сильный, но не единственный мотиватор."},
+      ", I disagree that it is ",
+      {t:"the primary source of motivation", k:'h', n:"«основной / главный источник мотивации» — то, что важнее всего остального."},
+      ". In my view, job satisfaction and opportunities for professional growth are equally, if not ",
+      {t:"more,", k:'u', n:"более"},
+      " influential."
+    ],
+    [
+      "Admittedly, financial rewards can be a powerful incentive. Most people ",
+      {t:"work partly to", k:'h', n:"«работают отчасти для того, чтобы» — partly подчёркивает, что это не единственная причина."},
+      " support themselves and their families, and ",
+      {t:"a higher income enables them to afford better", k:'h', n:"«более высокий доход позволяет им позволить себе лучшее...» — enable smb to do smth = давать возможность."},
+      " housing, ",
+      {t:"education", k:'u', n:"образование"},
+      " and healthcare. Employees may therefore be willing to put greater effort into their work when good performance is rewarded with salary increases or bonuses. This is particularly true for those on relatively low incomes, for whom even a ",
+      {t:"modest pay rise can make a meaningful difference to their standard of living", k:'h', n:"«даже скромное повышение зарплаты может существенно изменить уровень жизни» — meaningful difference = значимая разница."},
+      ". However, the motivational effect of money may diminish once employees earn enough to live comfortably."
+    ],
+    [
+      "Other aspects of employment ",
+      {t:"can have a more lasting influence on people's willingness to", k:'h', n:"«могут оказывать более длительное влияние на готовность людей» — lasting = долговременный, устойчивый."},
+      " perform well. One of these is job satisfaction. Employees who find their work meaningful and feel that their contribution is valued are more likely to ",
+      {t:"remain", k:'u', n:"оставаться"},
+      " engaged, even when they could potentially earn more elsewhere. Equally important are opportunities for ",
+      {t:"career progression", k:'h', n:"«карьерный рост / продвижение по службе»."},
+      ". Being entrusted with greater responsibility, acquiring new skills and ",
+      {t:"having a", k:'h', n:"«имея» — вводит герундиальный оборот (having + noun)."},
+      " realistic prospect of promotion can give workers a ",
+      {t:"sense of purpose and encourage sustained effort", k:'h', n:"«чувство цели и поощряет неослабевающие усилия» — sense of purpose = ощущение смысла в работе; sustained effort = устойчивое, непрекращающееся усилие."},
+      ". For instance, a teacher who genuinely enjoys helping students progress ",
+      {t:"may derive considerable satisfaction", k:'h', n:"«может получать значительное удовлетворение» — derive = извлекать, получать."},
+      " from seeing their achievements, while opportunities to take on senior roles can provide an ",
+      {t:"additional incentive", k:'h', n:"«дополнительный стимул»."},
+      " to improve professionally. A high salary alone is unlikely to ",
+      {t:"compensate for monotonous work, poor", k:'h', n:"«компенсировать однообразную работу, плохое...» — compensate for = возмещать, компенсировать."},
+      " ",
+      {t:"management", k:'u', n:"руководство / менеджмент"},
+      " or the absence of career prospects."
+    ],
+    [
+      "In conclusion, although money ",
+      {t:"plays a significant role in motivating employees,", k:'h', n:"«играет значительную роль в мотивации сотрудников» — устойчивое клише для заключения."},
+      " I do not consider it the most important factor. Once people's basic financial ",
+      {t:"needs are met,", k:'h', n:"«потребности удовлетворены» — needs are met = потребности покрыты."},
+      " meaningful work, recognition and opportunities for professional development are likely to provide stronger and more ",
+      {t:"enduring motivation.", k:'h', n:"«долговременная, устойчивая мотивация» — enduring = длительный, стойкий."}
+    ]
+  ],
+  glossary:[
+    {p:"a competitive salary", t:"конкурентоспособная зарплата"},
+    {p:"be a powerful incentive", t:"быть мощным стимулом"},
+    {p:"the primary source of motivation", t:"основной источник мотивации"},
+    {p:"are equally, if not more, influential", t:"одинаково, если не более, важны"},
+    {p:"a higher income enables them to afford better housing, education and healthcare", t:"более высокий доход позволяет им позволить себе лучшее жильё, образование и медобслуживание"},
+    {p:"therefore be willing to put greater effort into their work", t:"поэтому готовы прикладывать больше усилий к работе"},
+    {p:"performance is rewarded", t:"результаты труда вознаграждаются"},
+    {p:"even a modest pay rise can make a meaningful difference to their standard of living", t:"даже скромное повышение зарплаты может существенно изменить уровень жизни"},
+    {p:"may diminish once employees earn enough to live comfortably", t:"может ослабевать, как только сотрудники зарабатывают достаточно для комфортной жизни"},
+    {p:"can have a more lasting influence on people's willingness to perform well", t:"может оказывать более длительное влияние на готовность людей хорошо работать"},
+    {p:"find their work meaningful and feel that their contribution is valued", t:"считают свою работу значимой и чувствуют, что их вклад ценят"},
+    {p:"to remain engaged", t:"оставаться вовлечёнными"},
+    {p:"opportunities for career progression", t:"возможности карьерного роста"},
+    {p:"having a realistic prospect of promotion", t:"иметь реальную перспективу повышения"},
+    {p:"a sense of purpose and encourage sustained effort", t:"чувство цели и поощряет неослабевающие усилия"},
+    {p:"may derive considerable satisfaction", t:"может получать значительное удовлетворение"},
+    {p:"can provide an additional incentive", t:"может дать дополнительный стимул"},
+    {p:"A high salary alone", t:"одна лишь высокая зарплата"},
+    {p:"compensate for monotonous work", t:"компенсировать однообразную работу"},
+    {p:"plays a significant role in motivating employees", t:"играет значительную роль в мотивации сотрудников"},
+    {p:"provide stronger and more enduring motivation", t:"обеспечивать более сильную и устойчивую мотивацию"}
+  ]
+},
+{
+  id:'ambition',
+  navRu:'Амбиции',
+  title:'Is ambition a positive quality?',
+  prompt:'Является ли амбициозность положительным качеством для тех, кто стремится к успеху?',
+  paragraphs:[
+    [
+      {t:"The question of whether", k:'h', n:"Клише вступления: «Вопрос о том, ...»."},
+      " ambition is an important quality for those ",
+      {t:"seeking", k:'h', n:"«стремящихся к» — причастие от to seek (искать / стремиться)."},
+      " success has become a subject of considerable debate. While excessive ambition can undoubtedly lead to unhealthy competition and personal dissatisfaction, I believe that it is essential for achieving long-term goals and is, on balance, a positive characteristic."
+    ],
+    [
+      "Ambition plays a crucial role in ",
+      {t:"determining", k:'h', n:"«определяющий» — determine = определять, влиять на."},
+      " how much effort people are willing to invest in their goals. Those with a strong desire to succeed are generally more prepared ",
+      {t:"to work consistently,", k:'h', n:"«работать последовательно / стабильно»."},
+      " overcome ",
+      {t:"setbacks", k:'u', n:"неудачи, препятствия"},
+      " and make sacrifices in pursuit of their objectives. This is particularly important in ",
+      {t:"highly competitive fields,", k:'h', n:"«высококонкурентные сферы»."},
+      " where ability alone may ",
+      {t:"not be sufficient", k:'h', n:"«может быть недостаточно» — sufficient = достаточный."},
+      " to achieve ",
+      {t:"outstanding results", k:'h', n:"«выдающиеся результаты»."},
+      ". For instance, an aspiring doctor must complete years of demanding education and practical training before ",
+      {t:"becoming fully qualified", k:'h', n:"«получения полной квалификации» — become qualified = стать квалифицированным специалистом."},
+      ". Without a ",
+      {t:"clear sense of ambition", k:'h', n:"«ясное чувство целеустремлённости»."},
+      ", it may be difficult to maintain the motivation required throughout such a lengthy process. Ambition can therefore ",
+      {t:"transform potential into tangible achievement", k:'h', n:"«превращать потенциал в осязаемое достижение» — tangible = ощутимый, реальный."},
+      " by encouraging ",
+      {t:"perseverance", k:'h', n:"«упорство, настойчивость»."},
+      " and continuous improvement."
+    ],
+    [
+      "I also consider ambition to be largely a positive characteristic, ",
+      {t:"provided that it remains within reasonable limits", k:'h', n:"«при условии, что оно остаётся в разумных пределах» — provided that = при условии, что."},
+      ". Ambitious individuals ",
+      {t:"often seek new challenges,", k:'h', n:"«часто ищут новые вызовы/задачи»."},
+      " develop their ",
+      {t:"abilities", k:'u', n:"способности"},
+      " and set increasingly demanding goals, ",
+      {t:"all of which can contribute to", k:'h', n:"«всё это может способствовать...» — оборот для присоединения следствия."},
+      " both personal and professional growth. Their ",
+      {t:"determination", k:'h', n:"«решимость, целеустремлённость»."},
+      " may also lead to innovations or achievements that benefit society ",
+      {t:"as a whole", k:'h', n:"«в целом»."},
+      ". Nevertheless, ambition can become harmful when success is pursued at any cost. An excessive focus on career advancement, for example, may cause people to ",
+      {t:"neglect their health,", k:'h', n:"«пренебрегать своим здоровьем»."},
+      " ",
+      {t:"relationships", k:'u', n:"отношения"},
+      " or ethical principles. The problem, however, lies not in ambition itself but in the ",
+      {t:"inability", k:'h', n:"«неспособность»."},
+      " to balance it with other priorities."
+    ],
+    [
+      "In conclusion, ambition ",
+      {t:"is highly important for people who wish to succeed because it", k:'h', n:"клише для заключения: «крайне важна для людей, стремящихся к успеху, потому что она...»."},
+      " provides the ",
+      {t:"determination necessary", k:'h', n:"«необходимую решимость»."},
+      " to overcome difficulties and pursue ",
+      {t:"demanding", k:'h', n:"«трудные, требовательные» (о целях)."},
+      " goals. Although excessive ambition can have ",
+      {t:"undesirable consequences", k:'h', n:"«нежелательные последствия»."},
+      ", I believe that, ",
+      {t:"when kept in perspective, it is an overwhelmingly positive quality.", k:'h', n:"«если держать её в разумных рамках, это в подавляющей степени положительное качество» — overwhelmingly = в подавляющем большинстве, крайне."}
+    ]
+  ],
+  glossary:[
+    {p:"excessive ambition", t:"чрезмерная амбициозность"},
+    {p:"unhealthy competition and personal dissatisfaction", t:"нездоровая конкуренция и личная неудовлетворённость"},
+    {p:"achieving long-term goals and is, on balance, a positive characteristic", t:"достижение долгосрочных целей, и в целом это положительная черта"},
+    {p:"determining how much effort people are willing to invest in", t:"определяет, сколько усилий люди готовы вкладывать"},
+    {p:"a strong desire to succeed", t:"сильное желание добиться успеха"},
+    {p:"to work consistently, overcome setbacks and make sacrifices in pursuit of their objectives", t:"работать последовательно, преодолевать неудачи и идти на жертвы ради своих целей"},
+    {p:"highly competitive fields", t:"высококонкурентные сферы"},
+    {p:"an aspiring doctor", t:"начинающий / будущий врач"},
+    {p:"becoming fully qualified", t:"получение полной квалификации"},
+    {p:"a clear sense of ambition", t:"ясное чувство целеустремлённости"},
+    {p:"therefore transform potential into tangible achievement", t:"поэтому превращает потенциал в осязаемое достижение"},
+    {p:"provided that it remains within reasonable limits", t:"при условии, что она остаётся в разумных пределах"},
+    {p:"often seek new challenges", t:"часто ищут новые вызовы"},
+    {p:"all of which can contribute", t:"всё это может способствовать"}
+  ]
+},
+{
+  id:'cities',
+  navRu:'Города',
+  title:'Why are major cities overcrowded?',
+  prompt:'Почему крупные города становятся перенаселёнными и как это можно решить?',
+  paragraphs:[
+    [
+      "The question of why major cities in many countries have ",
+      {t:"become excessively large and overcrowded", k:'h', n:"«стали чрезмерно большими и перенаселёнными»."},
+      " has become a subject of considerable debate. This trend ",
+      {t:"is primarily driven by the", k:'h', n:"«в первую очередь обусловлен...» — primarily driven by = вызван главным образом."},
+      " ",
+      {t:"concentration", k:'h', n:"«концентрация, сосредоточение»."},
+      " of employment and educational opportunities in urban centres, as well as migration from rural areas. However, several measures, particularly regional investment and improved infrastructure, could help address this problem."
+    ],
+    [
+      "One major reason for urban overcrowding is ",
+      {t:"the unequal distribution of economic opportunities", k:'h', n:"«неравномерное распределение экономических возможностей»."},
+      ". Large cities tend to offer a wider range of well-paid jobs, prestigious ",
+      {t:"universities", k:'u', n:"университеты"},
+      " and essential services, attracting people who seek a higher standard of living. By contrast, rural areas and smaller towns often ",
+      {t:"provide fewer employment prospects,", k:'h', n:"«предоставляют меньше возможностей трудоустройства»."},
+      " particularly for highly skilled workers. As a result, many young adults have little choice but to ",
+      {t:"relocate to major urban centres", k:'h', n:"«переезжать в крупные города» — relocate = переезжать, перемещаться."},
+      ". This situation is ",
+      {t:"further intensified by", k:'h', n:"«ещё больше усиливается за счёт...»."},
+      " natural population growth and international migration. When large numbers of people ",
+      {t:"settle permanently", k:'h', n:"«селятся постоянно, окончательно»."},
+      " in already densely populated cities, housing supply and public infrastructure ",
+      {t:"may struggle to keep pace,", k:'h', n:"«могут не успевать» — struggle to keep pace = с трудом поспевать."},
+      " leading to severe congestion and overcrowding."
+    ],
+    [
+      "The most effective solution would be to make smaller cities and rural areas more attractive places in which to live and work. Governments could achieve this by ",
+      {t:"encouraging companies to establish offices outside major cities through tax incentives and investment grants", k:'h', n:"«поощряя компании открывать офисы за пределами крупных городов с помощью налоговых льгот и инвестиционных грантов»."},
+      ". At the same time, greater funding should be directed towards regional schools, hospitals, transport ",
+      {t:"networks", k:'u', n:"сети"},
+      " and digital infrastructure. If people could ",
+      {t:"access comparable", k:'h', n:"«получать доступ к сопоставимым (услугам)» — comparable = сопоставимый, сравнимый."},
+      " employment opportunities and public services without relocating, the pressure on major cities would ",
+      {t:"gradually decline", k:'h', n:"«постепенно снижаться»."},
+      ". Another practical measure would be to ",
+      {t:"improve transport", k:'h', n:"«улучшить транспортное сообщение»."},
+      " links between towns and surrounding towns. Reliable and affordable rail networks, for example, would allow employees to ",
+      {t:"live further from urban centres", k:'h', n:"«жить дальше от городских центров»."},
+      " while still commuting conveniently to work."
+    ],
+    [
+      "In conclusion, the ",
+      {t:"excessive growth of major cities is largely caused", k:'h', n:"«чрезмерный рост крупных городов в значительной степени вызван...»."},
+      " by the concentration of jobs, ",
+      {t:"education", k:'u', n:"образование"},
+      " and essential services in urban areas. Although this problem cannot be ",
+      {t:"resolved immediately,", k:'h', n:"«решена немедленно»."},
+      " investing in regional development and improving transport connections could distribute the population more evenly and significantly reduce overcrowding."
+    ]
+  ],
+  glossary:[
+    {p:"become excessively large and overcrowded", t:"стали чрезмерно большими и перенаселёнными"},
+    {p:"is primarily driven by the concentration", t:"в первую очередь вызвано концентрацией"},
+    {p:"help address this problem", t:"помочь решить эту проблему"},
+    {p:"the unequal distribution of economic opportunities", t:"неравномерное распределение экономических возможностей"},
+    {p:"tend to offer a wider range of well-paid jobs, prestigious universities and essential services, attracting people who seek a higher standard of living", t:"как правило, предлагают более широкий выбор хорошо оплачиваемых рабочих мест, престижные университеты и важные услуги, привлекая людей, стремящихся к более высокому уровню жизни"},
+    {p:"provide fewer employment prospects", t:"предоставляют меньше возможностей трудоустройства"},
+    {p:"relocate to major urban centres", t:"переезжать в крупные города"},
+    {p:"further intensified", t:"ещё больше усиливается"},
+    {p:"congestion", t:"заторы, перегруженность"},
+    {p:"make more attractive", t:"сделать более привлекательными"},
+    {p:"encouraging companies to establish offices", t:"поощряя компании открывать офисы"},
+    {p:"through tax incentives and investment grants", t:"с помощью налоговых льгот и инвестиционных грантов"},
+    {p:"greater funding should be directed towards", t:"больше финансирования следует направить на"},
+    {p:"access comparable employment opportunities and public services", t:"иметь доступ к сопоставимым возможностям трудоустройства и услугам"},
+    {p:"gradually decline", t:"постепенно снижаться"},
+    {p:"Another practical measure", t:"ещё одна практическая мера"},
+    {p:"improve transport links", t:"улучшить транспортное сообщение"},
+    {p:"Reliable and affordable", t:"надёжный и доступный по цене"},
+    {p:"live further from urban centres", t:"жить дальше от городских центров"}
+  ]
+},
+{
+  id:'hours',
+  navRu:'Часы работы',
+  title:'Should working hours be limited?',
+  prompt:'Должны ли государства ограничивать количество рабочих часов?',
+  paragraphs:[
+    [
+      "The question of whether governments should limit the number of hours that employers can require their employees to work has become a subject of considerable debate. Such laws have primarily been introduced ",
+      {t:"to protect workers from excessive workloads", k:'h', n:"«для защиты работников от чрезмерной нагрузки»."},
+      " and ",
+      {t:"safeguard", k:'h', n:"«защищать, ограждать» — синоним protect, но более формальный."},
+      " their physical and mental well-being. In my view, this is a largely positive development, as it promotes a healthier ",
+      {t:"workforce", k:'u', n:"рабочая сила"},
+      " without ",
+      {t:"necessarily undermining", k:'h', n:"«не обязательно подрывая» — undermine = подрывать, ослаблять."},
+      " productivity."
+    ],
+    [
+      "The main reason for introducing restrictions on working hours is to ",
+      {t:"prevent employers from placing unreasonable demands on their staff", k:'h', n:"«не допустить, чтобы работодатели предъявляли необоснованные требования к персоналу»."},
+      ". In highly competitive industries, employees ",
+      {t:"may feel obliged", k:'h', n:"«могут чувствовать себя обязанными»."},
+      " to work overtime for fear of losing their jobs or damaging their ",
+      {t:"prospects of promotion", k:'h', n:"«перспективы повышения»."},
+      ". Prolonged working hours can ",
+      {t:"leave individuals physically exhausted", k:'h', n:"«оставлять людей физически истощёнными»."},
+      " and under considerable stress, potentially ",
+      {t:"resulting in burnout", k:'h', n:"«приводя к профессиональному выгоранию»."},
+      " and other health problems. Moreover, those who ",
+      {t:"regularly remain at work", k:'h', n:"«регулярно остаются на работе»."},
+      " until late have less time to spend with their families, ",
+      {t:"exercise", k:'u', n:"заниматься спортом / физическими упражнениями"},
+      " or simply recover from the demands of their jobs. Legal limits therefore ",
+      {t:"provide employees with a degree of protection", k:'h', n:"«предоставляют работникам определённую степень защиты»."},
+      " that they might otherwise be unable to secure themselves."
+    ],
+    [
+      "I consider this legislation beneficial not only for employees but also for businesses. Although some employers may ",
+      {t:"assume", k:'h', n:"«полагать, предполагать»."},
+      " that longer hours automatically lead to greater ",
+      {t:"output,", k:'h', n:"«выпуск продукции, производительность»."},
+      " productivity often declines when workers become exhausted. Employees who receive adequate rest are generally better able to concentrate, make sound ",
+      {t:"decisions", k:'u', n:"решения"},
+      " and perform their ",
+      {t:"duties", k:'u', n:"обязанности"},
+      " efficiently. Limiting ",
+      {t:"excessive overtime", k:'h', n:"«чрезмерные сверхурочные»."},
+      " may also improve job satisfaction, which can reduce staff ",
+      {t:"turnover", k:'u', n:"текучесть кадров"},
+      " and help companies ",
+      {t:"retain", k:'u', n:"удерживать"},
+      " experienced workers. Admittedly, certain sectors ",
+      {t:"may occasionally require longer", k:'h', n:"«иногда могут требовать более длительных...»."},
+      " hours during ",
+      {t:"emergencies", k:'u', n:"чрезвычайные ситуации"},
+      " or particularly busy periods. However, ",
+      {t:"reasonable exceptions", k:'h', n:"«разумные исключения»."},
+      " can be ",
+      {t:"incorporated", k:'h', n:"«включены, встроены» — incorporate = включать в состав."},
+      " into the law without allowing excessive working hours to become standard practice."
+    ],
+    [
+      "In conclusion, laws restricting working hours have largely been introduced to protect ",
+      {t:"employees", k:'u', n:"работники"},
+      " from exploitation and the ",
+      {t:"damaging consequences of overwork", k:'h', n:"«разрушительные последствия переработки»."},
+      ". I regard this as a positive development because a reasonable work schedule can improve people's well-being while also contributing to a more productive and ",
+      {t:"stable workforce.", k:'h', n:"«стабильная рабочая сила»."}
+    ]
+  ],
+  glossary:[
+    {p:"can require their employees", t:"могут требовать от своих сотрудников"},
+    {p:"to protect workers from excessive workloads", t:"для защиты работников от чрезмерной нагрузки"},
+    {p:"it promotes a healthier workforce", t:"это способствует более здоровой рабочей силе"},
+    {p:"undermining productivity", t:"подрывая производительность"},
+    {p:"to prevent employers from placing unreasonable demands", t:"не допустить, чтобы работодатели предъявляли необоснованные требования"},
+    {p:"may feel obliged", t:"могут чувствовать себя обязанными"},
+    {p:"for fear of losing their jobs or damaging their prospects of promotion", t:"из страха потерять работу или навредить перспективам повышения"},
+    {p:"leave individuals physically exhausted", t:"оставлять людей физически истощёнными"},
+    {p:"resulting in burnout", t:"приводя к профессиональному выгоранию"},
+    {p:"regularly remain at work", t:"регулярно оставаться на работе"},
+    {p:"recover from the demands of their jobs", t:"восстанавливаться после рабочей нагрузки"},
+    {p:"provide employees with a degree of protection", t:"предоставляют работникам определённую степень защиты"},
+    {p:"secure themselves", t:"обеспечить себе самостоятельно"},
+    {p:"this legislation beneficial", t:"это законодательство полезно"},
+    {p:"assume that longer hours automatically lead to greater output, productivity often declines when workers become exhausted", t:"полагают, что более долгие часы автоматически ведут к большей производительности, тогда как на деле производительность часто падает, когда работники истощены"},
+    {p:"excessive overtime", t:"чрезмерные сверхурочные"},
+    {p:"may occasionally require longer", t:"иногда могут требовать более длительных (часов)"},
+    {p:"particularly busy periods", t:"особенно загруженные периоды"},
+    {p:"reasonable exceptions", t:"разумные исключения"},
+    {p:"exploitation", t:"эксплуатация"},
+    {p:"damaging consequences", t:"разрушительные последствия"},
+    {p:"while also contributing", t:"при этом также способствуя"}
+  ]
+}
+];
+
+// ---- task 1 structures data ------------------------------------------------
+const task1Categories = [
+{
+  title:"Лидерство и позиция в рейтинге",
+  items:[
+    {s:"A led the way with / topped the chart with X%, followed by B at Y%.",
+     e:"In terms of tuition, Australia led the way with 325, followed by Denmark at 225.",
+     n:"led the way / topped the chart = занимал первое место, возглавлял рейтинг."},
+    {s:"A held the upper hand at X%, leaving B well behind at Y%.",
+     e:"The UK held the upper hand at 50%, leaving Italy well behind at 25%.",
+     n:"held the upper hand = имел явное преимущество, был впереди."},
+    {s:"A was the predominant category, at X% / accounting for X%.",
+     e:"Tuition was the predominant category, accounting for 40%.",
+     n:"predominant = преобладающий, доминирующий."},
+    {s:"B ranked second / a distant second at X%.",
+     e:"Catering ranked a distant second at 26%.",
+     n:"a distant second = далеко на втором месте, со значительным отставанием."},
+    {s:"X started at the bottom of the ranking, at just Y%, before subsequently moving up to second/third place, ultimately reaching Z%.",
+     e:"Italy started at the bottom of the ranking, at just 10%, before rising modestly to 15% by 1995. This upward trend persisted, with the proportion subsequently climbing to second place at 25%.",
+     n:"начинал с последнего места в рейтинге, затем постепенно поднимался."},
+    {s:"A recorded the single highest / lowest figure in the table.",
+     e:"A recorded the single highest figure in the table.",
+     n:"единственный самый высокий / самый низкий показатель в таблице."},
+    {s:"X topped the ranking at X%.",
+     e:"X topped the ranking at 35%.",
+     n:"возглавлял рейтинг с показателем X%."}
+  ]
+},
+{
+  title:"Сравнение двух величин",
+  items:[
+    {s:"A accounted for X% (fraction), while B was half as high, at Y%.",
+     e:"Italy accounted for 40% (two-fifths), while Canada was half as high, at 20%.",
+     n:"half as high = вдвое ниже, в два раза меньше."},
+    {s:"A was roughly half as high as B, at X%.",
+     e:"Meanwhile, Canada was roughly half as high as Italy at the outset, at 18%.",
+     n:"roughly = примерно, приблизительно."},
+    {s:"A was more than double / triple the share observed in B.",
+     e:"A was more than triple the share observed in B.",
+     n:"более чем вдвое / втрое больше доли B."},
+    {s:"A outstripped B by X percentage points.",
+     e:"A outstripped B by X percentage points.",
+     n:"outstripped = превзошёл, опередил на X процентных пунктов."},
+    {s:"A led the way at X% and Y%, respectively, dwarfing / outstripping the corresponding figures for B and C, which stood at X% and Y%.",
+     e:"A led the way with 48% and 52%, respectively, dwarfing the corresponding figures for B and C, which stood at X% and Y%.",
+     n:"dwarfing = значительно превосходя (буквально «делая карликовым»)."},
+    {s:"A remained slightly above B, yet was roughly half the level recorded for C.",
+     e:"A remained slightly above B, yet was roughly half the level recorded for C.",
+     n:"был немного выше B, но примерно вдвое ниже C."},
+    {s:"A matched the proportion observed in B.",
+     e:"A matched the proportion observed in B.",
+     n:"matched = сравнялся с показателем B, совпал."},
+    {s:"B recorded an X% share — identical to that of C.",
+     e:"In stark contrast to A, where the figure bottomed out at X%, B recorded an X% share — identical to that of C.",
+     n:"identical to = идентичный, полностью совпадающий."}
+  ]
+},
+{
+  title:"Разрыв между показателями во времени",
+  items:[
+    {s:"The gap between A and B narrowed / widened / expanded over time, with the figures ending at X% and Y% [in year / respectively].",
+     e:"The gap between them narrowed over time, with the USA ultimately falling to 40% and Canada rising to its highest point of 35% by 2020.",
+     n:"разрыв между A и B сократился / увеличился со временем."},
+    {s:"A held the upper hand at X%, edging out / surpassing B by a narrow / substantial margin of X percentage points.",
+     e:"The UK held the upper hand at a substantial 55%, edging out Italy's 50% by a narrow margin of 5 percentage points.",
+     n:"edging out / surpassing by a margin of = опережал на... (узкий или значительный отрыв)."},
+    {s:"A intersected with B in [year] at approximately X, ultimately reaching a high of X in [year].",
+     e:"A intersected with B in [year] at approximately X, ultimately reaching a high of X in [year].",
+     n:"intersected with = пересёкся с — линии графика сравнялись в этой точке."},
+    {s:"A drew level with B at X in [year].",
+     e:"A drew level with B at X in [year].",
+     n:"drew level with = сравнялся с B на уровне X."}
+  ]
+},
+{
+  title:"Похожие или разные модели поведения",
+  items:[
+    {s:"The pattern for A contrasted sharply with that of B.",
+     e:"Conversely, the pattern for Italy contrasted sharply with that of the UK.",
+     n:"модель A резко отличалась от модели B."},
+    {s:"The pattern for A closely mirrored that of B. / A followed a broadly similar pattern to that of B.",
+     e:"The pattern for Italy closely mirrored that of the UK. / Factories followed a broadly similar pattern to that of the workforce.",
+     n:"модель A была очень похожа на модель B. Обратите внимание: mirrored не требует предлога (не with/to)."},
+    {s:"A exhibited / followed a markedly different / broadly similar pattern.",
+     e:"A exhibited a markedly different pattern.",
+     n:"markedly different = заметно, значительно отличающийся; broadly similar = в целом похожий."}
+  ]
+},
+{
+  title:"Рост показателя",
+  items:[
+    {s:"A edged up / experienced a slight uptick to finish at X%.",
+     e:"A experienced a slight uptick to finish at X%.",
+     n:"edge up = немного вырасти, слегка подняться."},
+    {s:"A soared / surged / rocketed / skyrocketed.",
+     e:"A surged exponentially. / A rocketed.",
+     n:"резкий, значительный рост — намного сильнее, чем edge up."},
+    {s:"A made a slight recovery to settle at X% (after falling).",
+     e:"A made a slight recovery to settle at X%.",
+     n:"немного восстановился после падения и закрепился на X%."},
+    {s:"A ultimately reached a high of X in [year].",
+     e:"A ultimately reached a high of X in [year].",
+     n:"в итоге достиг максимума X в [году]."}
+  ]
+},
+{
+  title:"Падение показателя",
+  items:[
+    {s:"A edged down / experienced a slight dip to finish at X%.",
+     e:"A experienced a slight dip to finish at X%.",
+     n:"edge down = немного снизиться, слегка упасть."},
+    {s:"A plummeted / plunged / slumped.",
+     e:"The figure plunged to a trough of X in [year].",
+     n:"резкое, значительное падение — намного сильнее, чем edge down."},
+    {s:"The figure fell to X%, almost halving. / The figure (almost) halved to X%. / The figure was (almost) halved to X%.",
+     e:"Italy accounted for 33%, after which the figure fell to 15%, almost halving.",
+     n:"halving = сокращение примерно вдвое."}
+  ]
+},
+{
+  title:"Стабильность и колебания",
+  items:[
+    {s:"A hovered around the X% mark.",
+     e:"Cars ranked second and hovered around the 20% mark between 2000 and 2005.",
+     n:"hovered around = держался в районе, колебался около отметки X%."},
+    {s:"A remained relatively / virtually stable / static throughout the period.",
+     e:"A remained virtually static throughout the period.",
+     n:"оставался практически неизменным, стабильным."},
+    {s:"A fluctuated between X and Y / within a narrow or wide range of X% to Y%.",
+     e:"Its figure remained virtually unchanged, fluctuating within a narrow range of X% to X% across the entire timeframe.",
+     n:"колебался в узком или широком диапазоне от X% до Y%."},
+    {s:"A eventually settled at its original / initial level of X%.",
+     e:"...eventually settling at its original level of X%.",
+     n:"в итоге вернулся к первоначальному уровню X%."}
+  ]
+},
+{
+  title:"Кратные величины",
+  items:[
+    {s:"twofold / threefold / fourfold / fivefold increase / reduction",
+     e:"...roughly a twofold increase compared to 1990.",
+     n:"двукратный / трёхкратный / четырёхкратный / пятикратный рост или сокращение."},
+    {s:"A stood at X%, twice / double / triple the figure recorded for B.",
+     e:"Aziza's share stood at 70%, more than triple the figure recorded for Riboba, at 22%.",
+     n:"показатель A был вдвое / втрое больше показателя B."}
+  ]
+},
+{
+  title:"Пики и минимумы",
+  items:[
+    {s:"This upward / downward trend persisted until [year] when A reached its highest / lowest point at just X% — roughly an X-fold increase / reduction compared to [year].",
+     e:"This upward trend persisted until 2020 when the proportion reached its highest point at 85% - roughly a twofold increase compared to 1990.",
+     n:"тенденция сохранялась, пока показатель не достиг максимума или минимума в X%."},
+    {s:"The figure plunged to a trough of X in [year].",
+     e:"The figure plunged to a trough of X in [year].",
+     n:"trough = минимум, самая низкая точка (противоположность peak)."},
+    {s:"In stark contrast to A, where the figure bottomed out at X%, B recorded an X% share.",
+     e:"In stark contrast to A, where the figure bottomed out at X%, B recorded an X% share.",
+     n:"bottomed out = достиг самой низкой точки, «дна»."}
+  ]
+},
+{
+  title:"Связки и обороты",
+  items:[
+    {s:"In terms of …, A led the way with X%, followed by B at Y%.",
+     e:"In terms of tuition, Australia led the way with 325, followed by Denmark at 225.",
+     n:"in terms of = что касается, в плане (чего-либо)."},
+    {s:"Meanwhile, … / Conversely, … / By contrast, … / As for A, …",
+     e:"Meanwhile, catering ranked second at 26% and remained unchanged throughout the period.",
+     n:"слова-связки для перехода к новому пункту или противопоставления."},
+    {s:"over the subsequent decade / across the majority of the period surveyed / throughout the entire timeframe",
+     e:"Catering remained virtually unchanged across the entire timeframe, at approximately one-quarter.",
+     n:"обороты для указания на весь или почти весь рассматриваемый период."}
+  ]
+},
+{
+  title:"Равное распределение долей",
+  items:[
+    {s:"A, B and C recorded an even split of X% each.",
+     e:"Adult fiction, children's fiction and biography recorded an even split of 20% each.",
+     n:"показатели A, B и C были равными, по X% каждый."},
+    {s:"A, B and C recorded a relatively even split of X%, Y% and Z%, respectively.",
+     e:"Adult fiction, children's fiction and biography recorded a relatively even split of 20%, 18% and 19%, respectively.",
+     n:"показатели были почти равными, с небольшой разницей."},
+    {s:"Unlike A, where B, C and D recorded an even split of X% each, E exhibited a more varied distribution.",
+     e:"Unlike A, where B, C and D recorded an even split of X% each, E exhibited a more varied distribution.",
+     n:"в отличие от A, где показатели были равными, E показал более разнородное распределение."}
+  ]
+}
+];
+
+function renderTask1(){
+  const root = document.getElementById('task1View');
+  root.innerHTML = '';
+  task1Categories.forEach((cat, i)=>{
+    const det = document.createElement('details');
+    det.className = 't1-cat';
+    if(i===0) det.open = true;
+    const sum = document.createElement('summary');
+    sum.innerHTML = '<span>' + cat.title + '</span><span class="count">' + cat.items.length + '</span>';
+    det.appendChild(sum);
+    const body = document.createElement('div');
+    body.className = 't1-cat-body';
+    cat.items.forEach(item=>{
+      const card = document.createElement('div');
+      card.className = 's-card';
+      card.innerHTML =
+        '<p class="s-structure">' + item.s + '</p>' +
+        '<p class="s-example">' + item.e + '</p>' +
+        '<p class="s-note">' + item.n + '</p>';
+      body.appendChild(card);
+    });
+    det.appendChild(body);
+    root.appendChild(det);
+  });
+}
+
+// ---- render ---------------------------------------------------------------
+const tabsEl = document.getElementById('tabs');
+const chipEl = document.getElementById('chipRow');
+const titleEl = document.getElementById('essayTitle');
+const promptEl = document.getElementById('essayPrompt');
+const bodyEl = document.getElementById('essayBody');
+const notePhrase = document.getElementById('notePhrase');
+const noteText = document.getElementById('noteText');
+const noteClose = document.getElementById('noteClose');
+
+let activeSpan = null;
+
+function buildNav(){
+  essays.forEach((e,i)=>{
+    const b = document.createElement('button');
+    b.innerHTML = e.navRu + '<span class="en">' + e.title + '</span>';
+    b.addEventListener('click', ()=>selectEssay(i));
+    b.dataset.idx = i;
+    tabsEl.appendChild(b);
+
+    const c = document.createElement('button');
+    c.textContent = e.navRu;
+    c.addEventListener('click', ()=>selectEssay(i));
+    c.dataset.idx = i;
+    chipEl.appendChild(c);
+  });
+}
+
+function resetNote(){
+  if(activeSpan){ activeSpan.classList.remove('active'); activeSpan = null; }
+  notePhrase.hidden = true;
+  noteClose.hidden = true;
+  noteText.innerHTML = '<span class="notebar-hint">Нажмите на выделенный текст, чтобы увидеть перевод или объяснение</span>';
+}
+
+function selectEssay(i){
+  const e = essays[i];
+  titleEl.textContent = e.title;
+  promptEl.textContent = e.prompt;
+  bodyEl.innerHTML = '';
+
+  e.paragraphs.forEach(paragraph=>{
+    const p = document.createElement('p');
+    paragraph.forEach(seg=>{
+      if(typeof seg === 'string'){
+        p.appendChild(document.createTextNode(seg));
+      } else {
+        const span = document.createElement('span');
+        span.className = 'mark mark-' + seg.k;
+        span.textContent = seg.t;
+        span.tabIndex = 0;
+        span.dataset.note = seg.n;
+        span.addEventListener('click', ()=>showNote(span, seg));
+        span.addEventListener('keypress', (ev)=>{ if(ev.key==='Enter') showNote(span, seg); });
+        p.appendChild(span);
+      }
+    });
+    bodyEl.appendChild(p);
+  });
+
+  const glossEl = document.getElementById('essayGlossary');
+  glossEl.innerHTML = '';
+  if(e.glossary && e.glossary.length){
+    const h3 = document.createElement('h3');
+    h3.textContent = 'Ключевые выражения';
+    glossEl.appendChild(h3);
+    const ol = document.createElement('ol');
+    e.glossary.forEach(item=>{
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="g-phrase">' + item.p + '</span><span class="g-dash"> — </span>' + item.t;
+      ol.appendChild(li);
+    });
+    glossEl.appendChild(ol);
+  }
+
+  [...tabsEl.children].forEach(b=>b.classList.toggle('active', +b.dataset.idx===i));
+  [...chipEl.children].forEach(b=>b.classList.toggle('active', +b.dataset.idx===i));
+  resetNote();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showNote(span, seg){
+  if(activeSpan) activeSpan.classList.remove('active');
+  span.classList.add('active');
+  activeSpan = span;
+  notePhrase.hidden = false;
+  notePhrase.textContent = '"' + seg.t.replace(/[,.]$/,'') + '"';
+  noteText.textContent = seg.n;
+  noteClose.hidden = false;
+}
+
+noteClose.addEventListener('click', resetNote);
+
+const modeEssaysBtn = document.getElementById('modeEssays');
+const modeTask1Btn = document.getElementById('modeTask1');
+const essaysView = document.getElementById('essaysView');
+const task1View = document.getElementById('task1View');
+const legendEssays = document.getElementById('legendEssays');
+const legendTask1 = document.getElementById('legendTask1');
+const notebar = document.getElementById('notebar');
+
+modeEssaysBtn.addEventListener('click', ()=>{
+  modeEssaysBtn.classList.add('active');
+  modeTask1Btn.classList.remove('active');
+  essaysView.style.display = '';
+  task1View.style.display = 'none';
+  legendEssays.hidden = false;
+  legendTask1.hidden = true;
+  notebar.style.display = '';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+modeTask1Btn.addEventListener('click', ()=>{
+  modeTask1Btn.classList.add('active');
+  modeEssaysBtn.classList.remove('active');
+  essaysView.style.display = 'none';
+  task1View.removeAttribute('hidden');
+  task1View.style.display = 'block';
+  legendEssays.hidden = true;
+  legendTask1.hidden = false;
+  notebar.style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+buildNav();
+selectEssay(0);
+renderTask1();
+</script>
+</body>
+</html>
