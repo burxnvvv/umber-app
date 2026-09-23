@@ -63,7 +63,9 @@
     background:radial-gradient(circle at 32% 28%, #6b4326, #2c1a0d 72%);
     border:1px solid var(--line);
     flex:none;
+    display:flex;align-items:center;justify-content:center;
   }
+  .brand-mark svg{width:17px;height:17px;display:block;}
   .brand h1{
     font-family:var(--serif);
     font-weight:600;
@@ -372,7 +374,12 @@
 <header>
   <div class="header-inner">
     <div class="brand">
-      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.5C9.5 6.5 6 11.2 6 14.8a6 6 0 0 0 12 0c0-3.6-3.5-8.3-6-11.8Z" fill="#d1a34a"/>
+          <ellipse cx="9.7" cy="12.5" rx="1.3" ry="1.9" fill="#e9c785" opacity="0.55"/>
+        </svg>
+      </span>
       <h1>Umber</h1>
     </div>
     <p class="tagline">IELTS Writing — эссе и структуры с переводом и разбором</p>
