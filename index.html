@@ -293,6 +293,14 @@
   }
   .mark-u:hover, .mark-u.active{color:var(--copper);}
 
+  .word{
+    cursor:pointer;
+    border-radius:3px;
+  }
+  .word:hover, .word.active{
+    background:rgba(209,163,74,0.16);
+  }
+
   /* ---------- mobile tab chips ---------- */
   .chip-row{display:none;}
 
@@ -393,7 +401,7 @@
   <div class="legend" id="legendEssays">
     <span><span class="swatch h" aria-hidden="true"></span> заливка — объяснение фразы</span>
     <span><span class="swatch u" aria-hidden="true"></span> пунктир — перевод слова</span>
-    <span>Нажмите на выделенный текст, чтобы увидеть разбор внизу</span>
+    <span>Любое слово тоже можно нажать — покажет перевод внизу</span>
   </div>
   <div class="legend" id="legendTask1" hidden>
     <span>Готовые формулы для описания графиков и диаграмм — сгруппированы по темам, каждая с примером и переводом</span>
@@ -432,6 +440,8 @@
 // ---- data ---------------------------------------------------------------
 // each paragraph is an array of segments: a plain string, or
 // {t:text, k:'h'|'u', n:note}  — h = explanation (highlight), u = translation (underline)
+
+const wordDict = {"a": "артикль (не переводится)", "ability": "способность", "able": "способный", "access": "доступ", "achieve": "достигать", "achieving": "достигая", "acquire": "приобретать", "active": "активный", "activity": "активность, деятельность", "adapt": "адаптироваться", "addition": "дополнение (in addition = кроме того)", "additional": "дополнительный", "admittedly": "по общему признанию", "adults": "взрослые", "advice": "совет", "afford": "позволить себе", "after": "после", "age": "возраст", "agree": "соглашаться", "all": "весь, все", "allow": "позволять", "allows": "позволяет", "alone": "один, сам по себе", "also": "также", "although": "хотя", "ambitious": "амбициозный", "an": "артикль (не переводится)", "and": "и", "are": "есть (мн.ч. гл. быть)", "areas": "области, сферы", "arrangements": "договорённости, условия", "as": "как, так как", "at": "в, на", "aware": "осведомлённый (aware that = осознавать, что)", "be": "быть", "because": "потому что", "become": "становиться", "becoming": "становясь", "being": "будучи; well-being = благополучие", "believe": "считать, полагать", "beneficial": "полезный, благоприятный", "benefit": "польза, выгода", "benefits": "преимущества", "best": "лучший", "better": "лучше", "bonuses": "премии, бонусы", "both": "оба", "bring": "приносить", "burnout": "выгорание", "but": "но", "by": "к, посредством", "can": "мочь", "cannot": "не мочь", "capable": "способный", "career": "карьера", "careers": "карьеры", "certain": "определённый", "challenges": "вызовы, трудности", "changing": "меняющийся", "children": "дети", "choice": "выбор", "clear": "ясный, очевидный", "colleagues": "коллеги", "companies": "компании", "compelling": "убедительный", "competitive": "конкурентный, конкурентоспособный", "complete": "завершать; полный", "conclusion": "заключение", "consequently": "следовательно", "considerable": "значительный", "consistently": "последовательно, стабильно", "consumer": "потребительский", "continue": "продолжать", "continuing": "продолжая", "contrast": "контраст (by contrast = напротив)", "contribute": "способствовать, вносить вклад", "could": "мог бы", "counterproductive": "контрпродуктивный", "countries": "страны", "country": "страна", "country's": "страны (притяж.)", "create": "создавать", "crucial": "решающий, ключевой", "debate": "дебаты, спор", "decades": "десятилетия", "demand": "спрос", "demanding": "требовательный, сложный", "demands": "требования", "dependent": "зависимый", "depends": "зависит", "derive": "извлекать, получать", "desire": "желание", "despite": "несмотря на", "develop": "развивать", "developing": "развивая", "development": "развитие", "devote": "посвящать", "difference": "разница", "difficult": "сложный", "diminish": "уменьшаться, ослабевать", "directed": "направленный", "disagree": "не соглашаться", "disposable": "располагаемый (disposable income = располагаемый доход)", "do": "делать", "doing": "делая", "earn": "зарабатывать", "earnings": "заработок, доходы", "economic": "экономический", "economically": "экономически", "economy": "экономика", "educated": "образованный", "education": "образование", "effective": "эффективный", "effort": "усилие", "efforts": "усилия", "employee": "сотрудник", "employees": "сотрудники", "employees'": "сотрудников (притяж.)", "employers": "работодатели", "employment": "занятость, трудоустройство", "enable": "давать возможность", "enables": "даёт возможность", "encourage": "поощрять", "engaged": "вовлечённый", "engineering": "инженерия", "environmental": "экологический", "equip": "снабжать, вооружать (знаниями)", "essential": "необходимый", "even": "даже", "everyone": "каждый", "exceed": "превышать", "excessive": "чрезмерный", "excessively": "чрезмерно", "exhausted": "истощённый", "experience": "опыт", "extended": "продлённый, удлинённый", "families": "семьи", "far": "гораздо, намного", "feature": "черта, особенность", "feel": "чувствовать", "few": "немного, мало", "fewer": "меньше (о количестве)", "fields": "сферы, области", "financial": "финансовый", "financially": "финансово", "find": "находить, считать", "first": "первый", "flexibility": "гибкость", "flexible": "гибкий", "for": "для, за", "from": "от, из", "full": "полный", "funding": "финансирование", "future": "будущее", "generation": "поколение", "generations": "поколения", "genuinely": "искренне, по-настоящему", "given": "данный, учитывая", "giving": "давая", "goals": "цели", "good": "хороший", "goods": "товары", "government": "правительство", "governments": "правительства", "greater": "больший", "growth": "рост", "guarantee": "гарантировать", "guidance": "наставление, руководство", "hard": "усердно, тяжело", "harder": "усерднее", "has": "имеет (ед.ч. гл. иметь)", "have": "иметь", "having": "имея", "health": "здоровье", "healthcare": "здравоохранение", "healthy": "здоровый", "help": "помогать", "high": "высокий", "higher": "выше, более высокий", "highly": "весьма, крайне", "hours": "часы", "however": "однако", "i": "я", "ideas": "идеи", "if": "если", "impact": "воздействие", "important": "важный", "improve": "улучшать", "in": "в", "incentives": "стимулы", "income": "доход", "incomes": "доходы", "increase": "увеличивать(ся)", "increasing": "растущий, увеличивающийся", "increasingly": "всё больше", "independent": "независимый", "indicator": "показатель", "individual": "личность; индивидуальный", "individuals": "отдельные люди", "industries": "отрасли", "influence": "влияние", "infrastructure": "инфраструктура", "initially": "изначально", "interaction": "взаимодействие", "interests": "интересы", "into": "в (направление)", "invest": "инвестировать", "investing": "инвестируя", "investment": "инвестиции", "is": "есть (ед.ч. гл. быть)", "it": "это, он/она (о предмете)", "job": "работа", "jobs": "рабочие места", "keeping": "удерживая, сохраняя", "labour": "труд, рабочая сила", "largely": "в основном, в значительной степени", "lasting": "длительный, устойчивый", "later": "позже", "lead": "вести (к чему-то)", "least": "наименьший (at least = по крайней мере)", "leave": "оставлять", "less": "меньше", "levels": "уровни", "life": "жизнь", "likely": "вероятно", "limits": "пределы", "lives": "жизни", "long": "долгий", "longer": "дольше, более долгий", "low": "низкий", "lower": "ниже, более низкий", "maintain": "поддерживать", "maintaining": "поддерживая", "make": "делать, заставлять", "makes": "делает", "manage": "справляться, управлять", "many": "многие", "market": "рынок", "markets": "рынки", "may": "может (вероятность)", "meaningful": "значимый", "medicine": "медицина", "mental": "психический, умственный", "modest": "скромный", "more": "больше", "moreover": "более того", "most": "наиболее, большинство", "motivated": "мотивированный", "motivation": "мотивация", "must": "должен", "necessarily": "обязательно", "necessary": "необходимый", "necessity": "необходимость", "needed": "нужный, необходимый", "negative": "отрицательный", "neglect": "пренебрегать", "nevertheless": "тем не менее", "new": "новый", "not": "не", "number": "число, количество", "obliged": "обязанный", "of": "предлог родительного падежа", "offer": "предлагать", "old": "старый, пожилой", "older": "более пожилой, старший", "on": "на", "one": "один", "only": "только", "opportunities": "возможности", "or": "или", "order": "порядок (in order to = чтобы)", "other": "другой", "others": "другие", "output": "выпуск продукции, производительность", "outstanding": "выдающийся", "over": "более, свыше; over time = со временем", "overtime": "сверхурочные", "part": "часть; part-time = неполный рабочий день", "particularly": "особенно", "pay": "оплата; платить", "people": "люди", "people's": "людей (притяж.)", "perform": "выполнять, работать", "performance": "результативность, производительность", "period": "период", "permanent": "постоянный", "personal": "личный", "physical": "физический", "physically": "физически", "placed": "размещённый, поставленный", "placing": "размещая", "play": "играть (роль)", "positions": "должности, позиции", "positive": "положительный", "possibility": "возможность", "potential": "потенциальный", "powerful": "мощный", "practical": "практический", "prepare": "готовить(ся)", "prepared": "готовый, подготовленный", "prioritising": "расставляя приоритеты", "priority": "приоритет", "production": "производство", "productive": "продуктивный", "productivity": "продуктивность", "profession": "профессия", "professional": "профессиональный", "professionally": "профессионально", "programmes": "программы", "progression": "продвижение, рост", "promotion": "повышение (по службе)", "properly": "должным образом", "prospect": "перспектива", "prospects": "перспективы", "prosperity": "процветание", "provide": "предоставлять", "provided": "при условии (provided that)", "provides": "предоставляет", "providing": "предоставляя", "public": "общественный, государственный", "purpose": "цель, смысл", "pursue": "преследовать (цель)", "pursuit": "стремление, погоня (за чем-то)", "put": "вкладывать (усилия)", "quality": "качество", "question": "вопрос", "rather": "скорее (rather than = а не)", "reaches": "достигает", "realistic": "реалистичный", "reason": "причина", "reasonable": "разумный", "reasons": "причины", "recover": "восстанавливаться", "reduce": "сокращать", "reducing": "сокращая", "relationships": "отношения", "relatively": "относительно", "reliable": "надёжный", "remain": "оставаться", "resources": "ресурсы", "respond": "реагировать, отвечать", "rest": "отдых", "result": "результат", "results": "результаты", "retire": "выходить на пенсию", "retirement": "выход на пенсию, пенсия", "rewarded": "вознаграждённый", "rewards": "вознаграждения", "rise": "рост, повышение", "role": "роль", "sacrifices": "жертвы", "salary": "зарплата", "satisfaction": "удовлетворение", "savings": "сбережения", "schedule": "график, расписание", "schools": "школы", "secure": "обеспечивать; надёжный", "security": "безопасность, защищённость", "sense": "чувство, смысл", "services": "услуги", "several": "несколько", "sheer": "чистый, сам по себе (sheer number = само количество)", "short": "короткий", "shorter": "короче", "should": "следует, должен", "simply": "просто", "skilled": "квалифицированный", "skills": "навыки", "so": "так, поэтому", "social": "социальный", "socially": "социально", "society": "общество", "some": "некоторые", "source": "источник", "spend": "тратить", "spending": "расходы, траты", "stable": "стабильный", "staff": "персонал", "state": "государство", "staying": "оставаясь", "strain": "нагрузка, напряжение", "stress": "стресс", "strong": "сильный", "subject": "тема, предмет", "succeed": "преуспевать, добиваться успеха", "success": "успех", "successful": "успешный", "such": "такой", "sufficient": "достаточный", "support": "поддерживать; поддержка", "supporting": "поддерживая", "sustain": "поддерживать (уровень)", "sustainable": "устойчивый (в долгосрочном плане)", "sustained": "устойчивый, непрекращающийся", "taxation": "налогообложение", "technological": "технологический", "technology": "технологии", "term": "срок (short/long term = кратко-/долгосрочный)", "than": "чем", "that": "что, тот", "the": "определённый артикль (не переводится)", "their": "их", "them": "их, им", "themselves": "сами (себя)", "there": "там; there are = есть, имеются", "therefore": "поэтому", "these": "эти", "they": "они", "this": "этот", "those": "те", "through": "через, посредством", "time": "время", "to": "к, чтобы (частица инфинитива)", "towards": "по направлению к", "training": "обучение, подготовка", "turn": "оборот; in turn = в свою очередь", "turnover": "текучесть (кадров)", "ultimately": "в конечном итоге", "under": "под", "undermine": "подрывать", "universities": "университеты", "unlikely": "маловероятный", "unnecessary": "ненужный", "valuable": "ценный", "vocational": "профессионально-техническое (образование)", "want": "хотеть", "way": "способ, путь", "ways": "способы", "well": "хорошо; well-being = благополучие", "when": "когда", "where": "где", "whether": "ли (union); является ли", "which": "который", "while": "в то время как", "whole": "весь, целый", "whom": "кому, которому", "why": "почему", "willing": "готовый, желающий", "with": "с", "within": "в пределах", "without": "без", "work": "работа; работать", "workers": "работники", "workforce": "рабочая сила", "working": "работающий; работа", "workload": "рабочая нагрузка", "workloads": "рабочие нагрузки", "would": "бы (усл. накл.)", "years": "годы", "young": "молодой", "younger": "младший, более молодой", "youth": "молодёжь", "abilities": "способности", "absence": "отсутствие", "achievement": "достижение", "achievements": "достижения", "acquiring": "приобретая", "address": "решать (проблему)", "adequate": "достаточный", "advancement": "продвижение", "affordable": "доступный по цене", "allowing": "позволяя", "already": "уже", "ambition": "амбициозность, честолюбие", "another": "другой, ещё один", "any": "любой", "aspects": "аспекты", "aspiring": "начинающий, стремящийся", "assume": "полагать, предполагать", "attracting": "привлекая", "attractive": "привлекательный", "automatically": "автоматически", "balance": "баланс, равновесие", "basic": "базовый, основной", "been": "был (прич. прош. вр. глагола быть)", "before": "до, прежде чем", "between": "между", "businesses": "предприятия, бизнес", "busy": "занятой, загруженный", "cause": "причина; вызывать", "caused": "вызванный", "centres": "центры", "characteristic": "черта, характеристика", "cities": "города", "comfortably": "комфортно", "commuting": "поездки на работу и обратно", "comparable": "сопоставимый", "compensate": "компенсировать", "competition": "конкуренция", "concentrate": "концентрироваться, сосредотачиваться", "concentration": "концентрация, сосредоточение", "congestion": "перегруженность, заторы", "connections": "связи, соединения", "consequences": "последствия", "consider": "считать, рассматривать", "continuous": "непрерывный", "contributing": "способствуя", "contribution": "вклад", "conveniently": "удобно", "cost": "цена, стоимость; ценой (чего-то)", "damaging": "наносящий вред, разрушительный", "decisions": "решения", "decline": "снижаться, спад", "declines": "снижается", "degree": "степень", "densely": "плотно", "determination": "решимость, целеустремлённость", "determining": "определяя", "difficulties": "трудности", "digital": "цифровой", "dissatisfaction": "неудовлетворённость", "distribute": "распределять", "distribution": "распределение", "doctor": "врач", "driven": "обусловленный, движимый", "during": "во время", "duties": "обязанности", "educational": "образовательный", "effect": "эффект, влияние", "efficiently": "эффективно", "elsewhere": "в другом месте", "emergencies": "чрезвычайные ситуации", "encouraging": "поощряя", "enduring": "длительный, устойчивый", "enjoys": "наслаждается, получает удовольствие", "enough": "достаточно", "entrusted": "доверенный (entrusted with = которому доверили)", "equally": "в равной степени", "establish": "создавать, учреждать", "ethical": "этический", "evenly": "равномерно", "example": "пример", "exceptions": "исключения", "exercise": "физические упражнения, заниматься спортом", "experienced": "опытный", "exploitation": "эксплуатация", "factor": "фактор", "fear": "страх", "focus": "фокус, акцент", "fully": "полностью", "further": "дальше, далее", "generally": "как правило, в целом", "give": "давать", "gradually": "постепенно", "grants": "гранты", "harmful": "вредный", "healthier": "более здоровый", "helping": "помогая", "hospitals": "больницы", "housing": "жильё", "how": "как", "immediately": "немедленно", "improved": "улучшенный", "improvement": "улучшение", "improving": "улучшая", "inability": "неспособность", "incentive": "стимул", "incorporated": "включённый, встроенный", "increases": "повышения (сущ., мн.ч.)", "influential": "влиятельный", "innovations": "инновации", "instance": "пример (for instance = например)", "intensified": "усиленный, обострившийся", "international": "международный", "introduced": "введённый, введён", "introducing": "вводя", "itself": "сам, само по себе", "keep": "держать, сохранять", "kept": "сохранённый, удержанный", "large": "большой, крупный", "late": "поздно", "law": "закон", "laws": "законы", "leading": "ведущий (leading to = приводящий к)", "legal": "юридический, законный", "legislation": "законодательство", "lengthy": "длительный, затяжной", "lies": "заключается (lies in = состоит в)", "limit": "ограничивать; предел", "limiting": "ограничивая", "links": "связи, сообщение (транспортное)", "little": "мало; little choice = почти нет выбора", "live": "жить", "living": "жизнь, проживание (standard of living = уровень жизни)", "losing": "теряя", "main": "главный, основной", "major": "крупный, основной", "management": "руководство, менеджмент", "measure": "мера", "measures": "меры", "met": "удовлетворённый, выполненный (needs are met)", "might": "мог бы (возможность)", "migration": "миграция", "money": "деньги", "monotonous": "однообразный", "motivating": "мотивирующий", "motivational": "мотивационный", "much": "много, намного", "my": "мой", "natural": "естественный", "needs": "потребности", "networks": "сети", "numbers": "числа, количество", "objectives": "цели, задачи", "occasionally": "иногда, время от времени", "offices": "офисы", "often": "часто", "once": "однажды, как только", "otherwise": "иначе", "outside": "за пределами, вне", "overcome": "преодолевать", "overcrowded": "перенаселённый", "overcrowding": "перенаселённость", "overwhelmingly": "в подавляющем большинстве, крайне", "overwork": "переработка", "pace": "темп", "paid": "оплачиваемый", "partly": "частично", "periods": "периоды", "permanently": "постоянно, окончательно", "perseverance": "упорство, настойчивость", "perspective": "перспектива, взгляд", "places": "места", "plays": "играет", "poor": "плохой, бедный", "populated": "населённый", "population": "население", "potentially": "потенциально", "practice": "практика", "pressure": "давление", "prestigious": "престижный", "prevent": "предотвращать, не допускать", "primarily": "главным образом", "primary": "основной, главный", "principles": "принципы", "priorities": "приоритеты", "problem": "проблема", "problems": "проблемы", "process": "процесс", "progress": "прогресс, продвигаться", "prolonged": "продолжительный, затяжной", "promotes": "способствует", "protect": "защищать", "protection": "защита", "pursued": "преследуемый (о цели)", "qualified": "квалифицированный", "rail": "железная дорога", "range": "диапазон, спектр", "receive": "получать", "recognition": "признание", "regard": "считать, рассматривать (regard as)", "regional": "региональный", "regularly": "регулярно", "relocate": "переезжать", "relocating": "переезжая", "remains": "остаётся", "require": "требовать", "required": "требуемый", "resolved": "решённый", "responsibility": "ответственность", "restricting": "ограничивающий", "restrictions": "ограничения", "resulting": "приводящий (в результате)", "retain": "удерживать (сотрудников)", "roles": "роли", "rural": "сельский", "safeguard": "защищать, ограждать", "same": "тот же самый", "sectors": "секторы, отрасли", "seeing": "видя", "seek": "искать, стремиться", "seeking": "стремящийся", "senior": "старший (по должности)", "set": "устанавливать; набор", "setbacks": "неудачи, препятствия", "settle": "селиться, обосновываться", "severe": "серьёзный, тяжёлый", "significant": "значительный", "significantly": "значительно", "situation": "ситуация", "smaller": "меньший", "solution": "решение (проблемы)", "sound": "обоснованный, разумный (sound decisions)", "standard": "уровень, стандарт", "still": "всё ещё", "stronger": "более сильный", "struggle": "с трудом справляться, бороться", "students": "студенты, ученики", "supply": "снабжение, предложение", "surrounding": "окружающий", "take": "брать, принимать (take on = взять на себя)", "tangible": "осязаемый, реальный", "tax": "налог", "teacher": "учитель", "tend": "иметь тенденцию, как правило", "throughout": "на протяжении, повсюду", "towns": "города (небольшие), посёлки", "transform": "превращать", "transport": "транспорт", "trend": "тенденция", "true": "верный, истинный", "unable": "неспособный", "undermining": "подрывая", "undesirable": "нежелательный", "undoubtedly": "несомненно", "unequal": "неравный", "unhealthy": "нездоровый", "unreasonable": "необоснованный", "until": "до тех пор пока", "urban": "городской", "valued": "ценимый", "view": "взгляд, точка зрения (in my view = на мой взгляд)", "who": "кто, который", "wider": "более широкий", "willingness": "готовность", "wish": "желать", "workplace": "рабочее место"};
 
 const essays = [
 {
@@ -774,7 +784,277 @@ const essays = [
     {p:"damaging consequences", t:"разрушительные последствия"},
     {p:"while also contributing", t:"при этом также способствуя"}
   ]
+},
+{
+  id:'hours-economy',
+  navRu:'Часы vs экономика',
+  title:'Do longer working hours lead to economic success?',
+  prompt:'Действительно ли страны с более долгим рабочим днём экономически успешнее?',
+  paragraphs:[
+    [
+      {t:"The question of whether", k:'h', n:"Клише вступления: «Вопрос о том, ...»."},
+      " countries with longer working hours are more economically successful than those where people work fewer hours has become a subject of considerable debate. While extended working hours may ",
+      {t:"lead to greater output in the short term", k:'h', n:"«приводить к большему объёму производства в краткосрочной перспективе»."},
+      ", I disagree that they are ",
+      {t:"a reliable indicator of economic success", k:'h', n:"«надёжный показатель экономического успеха»."},
+      ", as ",
+      {t:"excessive workloads can ultimately undermine", k:'h', n:"«чрезмерные рабочие нагрузки могут в конечном итоге подрывать...»."},
+      " both productivity and employee well-being."
+    ],
+    [
+      "Admittedly, longer working hours can bring certain economic benefits. In industries where demand is particularly high, ",
+      {t:"keeping employees at work for longer may allow companies to increase production", k:'h', n:"«удержание сотрудников на работе дольше может позволить компаниям увеличить производство»."},
+      " and complete more work within a given period. Employees may also be more willing to work additional hours when their ",
+      {t:"efforts are rewarded with overtime pay, bonuses or opportunities for promotion", k:'h', n:"«усилия вознаграждаются оплатой сверхурочных, премиями или возможностями повышения»."},
+      ". These ",
+      {t:"financial incentives can encourage sustained effort", k:'h', n:"«финансовые стимулы могут поощрять устойчивые, непрекращающиеся усилия»."},
+      " while providing workers with greater financial security. ",
+      {t:"Higher earnings may, in turn, increase consumer spending,", k:'h', n:"«более высокие заработки, в свою очередь, могут увеличивать потребительские расходы»."},
+      " as people have more disposable income to spend on goods and services. In this sense, longer working hours can ",
+      {t:"contribute to greater output and economic activity", k:'h', n:"«способствовать росту производства и экономической активности»."},
+      ", at least in the short term."
+    ],
+    [
+      "Nevertheless, longer working hours alone are unlikely to guarantee lasting economic success. When ",
+      {t:"workloads exceed reasonable limits,", k:'h', n:"«рабочие нагрузки превышают разумные пределы»."},
+      " employees may become physically exhausted and experience considerable stress, ultimately ",
+      {t:"reducing rather than increasing productivity", k:'h', n:"«снижая, а не повышая производительность»."},
+      ". Although ambitious workers may initially be prepared to work consistently and make sacrifices in pursuit of their professional goals, their ",
+      {t:"motivation is likely to diminish", k:'h', n:"«мотивация, вероятно, будет ослабевать»."},
+      " if excessively long hours become a permanent feature of their jobs. Over time, this can ",
+      {t:"result in lower job satisfaction, burnout and higher staff turnover", k:'h', n:"«приводить к снижению удовлетворённости работой, выгоранию и повышенной текучести кадров»."},
+      ". By contrast, ",
+      {t:"a reasonable work schedule allows employees to recover properly,", k:'h', n:"«разумный график работы позволяет сотрудникам как следует восстанавливаться»."},
+      " remain engaged and maintain consistently high levels of performance. In the long term, a skilled and productive workforce is therefore ",
+      {t:"far more valuable to an economy", k:'h', n:"«намного более ценен для экономики»."},
+      " than simply having people spend more hours at work."
+    ],
+    [
+      "In conclusion, although longer working hours may increase output and economic activity in the short term, I do not believe that they necessarily make a country more economically successful. ",
+      {t:"Sustainable economic growth depends more on having a healthy, motivated and productive workforce", k:'h', n:"«устойчивый экономический рост зависит в большей степени от наличия здоровой, мотивированной и продуктивной рабочей силы»."},
+      " than on the sheer number of hours people work."
+    ]
+  ],
+  glossary:[
+    {p:"a reliable indicator of economic success", t:"надёжный показатель экономического успеха"},
+    {p:"excessive workloads can ultimately undermine", t:"чрезмерные рабочие нагрузки могут в конечном итоге подрывать"},
+    {p:"keeping employees at work for longer", t:"удержание сотрудников на работе дольше"},
+    {p:"overtime pay, bonuses or opportunities for promotion", t:"оплата сверхурочных, премии или возможности повышения"},
+    {p:"financial incentives can encourage sustained effort", t:"финансовые стимулы могут поощрять устойчивые усилия"},
+    {p:"increase consumer spending", t:"увеличивать потребительские расходы"},
+    {p:"contribute to greater output and economic activity", t:"способствовать росту производства и экономической активности"},
+    {p:"workloads exceed reasonable limits", t:"рабочие нагрузки превышают разумные пределы"},
+    {p:"reducing rather than increasing productivity", t:"снижая, а не повышая производительность"},
+    {p:"motivation is likely to diminish", t:"мотивация, вероятно, будет ослабевать"},
+    {p:"result in lower job satisfaction, burnout and higher staff turnover", t:"приводить к снижению удовлетворённости работой, выгоранию и текучести кадров"},
+    {p:"a reasonable work schedule allows employees to recover properly", t:"разумный график работы позволяет сотрудникам как следует восстанавливаться"},
+    {p:"far more valuable to an economy", t:"гораздо более ценен для экономики"},
+    {p:"sustainable economic growth", t:"устойчивый экономический рост"}
+  ]
+},
+{
+  id:'old-age-work',
+  navRu:'Работа в старости',
+  title:'Should people keep working in old age?',
+  prompt:'Стоит ли людям продолжать работать в пожилом возрасте, если они способны на это?',
+  paragraphs:[
+    [
+      "The question of whether people should continue working in old age, ",
+      {t:"provided that they are able to do so,", k:'h', n:"«при условии, что они способны это делать» — provided that = при условии, что."},
+      " has become a subject of considerable debate. While ",
+      {t:"staying in employment can offer both financial and personal benefits,", k:'h', n:"«сохранение занятости может давать как финансовые, так и личные преимущества»."},
+      " I believe it is a positive choice only when older people genuinely want to work and are physically capable of doing so."
+    ],
+    [
+      "One clear benefit of working later in life is greater financial security. Not everyone ",
+      {t:"reaches retirement with sufficient savings,", k:'h', n:"«доходит до пенсии с достаточными сбережениями»."},
+      " and continuing to earn an income can allow older people to ",
+      {t:"support themselves without becoming dependent", k:'h', n:"«обеспечивать себя, не становясь зависимыми» (от детей или государства)."},
+      " on their children or the state. This is particularly important for those on relatively low incomes, for whom even a few additional years of employment can ",
+      {t:"make a meaningful difference to their quality of life", k:'h', n:"«существенно изменить качество их жизни»."},
+      ". Work can also ",
+      {t:"provide a sense of purpose and help older people remain socially active", k:'h', n:"«давать чувство цели и помогать пожилым людям оставаться социально активными»."},
+      ". After spending decades developing their skills and experience, many ",
+      {t:"may derive considerable satisfaction from continuing to contribute", k:'h', n:"«могут получать значительное удовлетворение от продолжения своего вклада»."},
+      " to their profession. Their experience can also be valuable to younger colleagues, particularly when they are able to ",
+      {t:"offer practical advice and guidance", k:'h', n:"«давать практические советы и наставления»."},
+      "."
+    ],
+    [
+      "However, continuing to work should be ",
+      {t:"a choice rather than a financial necessity", k:'h', n:"«выбор, а не финансовая необходимость»."},
+      ". Even when older people are capable of working, they may find long hours and demanding workloads increasingly difficult to manage. If they ",
+      {t:"feel obliged to remain in full-time employment", k:'h', n:"«чувствуют себя обязанными оставаться на полной занятости»."},
+      " simply because they cannot afford to retire, work may ",
+      {t:"become a source of stress rather than satisfaction", k:'h', n:"«становиться источником стресса, а не удовлетворения»."},
+      ". It can also leave them with less time for their health, families and personal interests after decades in the workforce. Employers should therefore ",
+      {t:"provide flexible working arrangements,", k:'h', n:"«предоставлять гибкие условия труда»."},
+      " such as shorter hours or part-time positions, so that older employees can remain professionally engaged ",
+      {t:"without placing unnecessary strain on their physical and mental well-being", k:'h', n:"«не создавая излишней нагрузки на физическое и психическое благополучие»."},
+      "."
+    ],
+    [
+      "In conclusion, I agree that working in old age can be beneficial, particularly because it ",
+      {t:"provides financial security, social interaction and a sense of purpose", k:'h', n:"«обеспечивает финансовую безопасность, социальное взаимодействие и чувство цели»."},
+      ". Nevertheless, it should remain a personal choice, and older people ",
+      {t:"should have the flexibility to reduce their workload", k:'h', n:"«должны иметь возможность гибко сокращать свою рабочую нагрузку»."},
+      " when necessary."
+    ]
+  ],
+  glossary:[
+    {p:"provided that they are able to do so", t:"при условии, что они способны это делать"},
+    {p:"staying in employment can offer both financial and personal benefits", t:"сохранение занятости может давать как финансовые, так и личные преимущества"},
+    {p:"reaches retirement with sufficient savings", t:"доходит до пенсии с достаточными сбережениями"},
+    {p:"support themselves without becoming dependent", t:"обеспечивать себя, не становясь зависимыми"},
+    {p:"make a meaningful difference to their quality of life", t:"существенно изменить качество их жизни"},
+    {p:"provide a sense of purpose", t:"давать чувство цели, смысла"},
+    {p:"remain socially active", t:"оставаться социально активными"},
+    {p:"may derive considerable satisfaction from continuing to contribute", t:"может получать значительное удовлетворение от продолжения вклада"},
+    {p:"offer practical advice and guidance", t:"давать практические советы и наставления"},
+    {p:"a choice rather than a financial necessity", t:"выбор, а не финансовая необходимость"},
+    {p:"feel obliged to remain in full-time employment", t:"чувствовать себя обязанными оставаться на полной занятости"},
+    {p:"become a source of stress rather than satisfaction", t:"становиться источником стресса, а не удовлетворения"},
+    {p:"provide flexible working arrangements", t:"предоставлять гибкие условия труда"},
+    {p:"without placing unnecessary strain on physical and mental well-being", t:"не создавая излишней нагрузки на физическое и психическое благополучие"}
+  ]
+},
+{
+  id:'invest-young',
+  navRu:'Инвестиции в молодёжь',
+  title:'Is investing in young people the best way to prepare for the future?',
+  prompt:'Лучший ли это способ для стран подготовиться к будущему — инвестировать в молодёжь?',
+  paragraphs:[
+    [
+      "The question of whether investing in young people is the best way for countries to prepare for the future has become a subject of considerable debate. While governments must also ",
+      {t:"devote resources to areas such as infrastructure and healthcare,", k:'h', n:"«направлять ресурсы на такие сферы, как инфраструктура и здравоохранение»."},
+      " I largely agree that ",
+      {t:"investment in the younger generation should be a priority,", k:'h', n:"«инвестиции в молодое поколение должны быть приоритетом»."},
+      " as it can ",
+      {t:"create a skilled workforce and contribute to long-term economic and social development", k:'h', n:"«создавать квалифицированную рабочую силу и способствовать долгосрочному экономическому и социальному развитию»."},
+      "."
+    ],
+    [
+      "One compelling reason to invest in young people is that education and training ",
+      {t:"equip them with the skills needed to succeed", k:'h', n:"«вооружают их навыками, необходимыми для успеха»."},
+      " in an increasingly competitive job market. ",
+      {t:"Government funding should therefore be directed towards", k:'h', n:"«государственное финансирование следует поэтому направить на...»."},
+      " schools, universities and vocational programmes, giving young people access to high-quality education and practical training. This would enable them to ",
+      {t:"acquire new skills, adapt to changing labour-market demands", k:'h', n:"«приобретать новые навыки, адаптироваться к меняющимся требованиям рынка труда»."},
+      " and improve their employment prospects. It could also provide opportunities for professional growth and ",
+      {t:"encourage young adults to pursue demanding careers", k:'h', n:"«побуждать молодых людей выбирать требовательные карьеры»."},
+      " in fields such as medicine, engineering and technology. As a result, countries would be better able to ",
+      {t:"develop a highly skilled workforce capable of supporting future economic growth", k:'h', n:"«развивать высококвалифицированную рабочую силу, способную поддерживать будущий экономический рост»."},
+      "."
+    ],
+    [
+      "Investment in young people can also benefit society as a whole. When individuals have access to good education and realistic career prospects, they are ",
+      {t:"more likely to secure stable employment and become financially independent", k:'h', n:"«с большей вероятностью получат стабильную занятость и станут финансово независимыми»."},
+      ". This not only enables them to support themselves and their families but also allows them to ",
+      {t:"contribute to the economy through taxation and consumer spending", k:'h', n:"«вносить вклад в экономику через налоги и потребительские расходы»."},
+      ". Moreover, well-educated younger generations are ",
+      {t:"better placed to develop new ideas and respond to future challenges,", k:'h', n:"«в лучшем положении, чтобы разрабатывать новые идеи и реагировать на будущие вызовы»."},
+      " whether technological, economic or environmental. Admittedly, investment in youth alone is ",
+      {t:"unlikely to guarantee a country's future prosperity,", k:'h', n:"«вряд ли способно гарантировать будущее процветание страны»."},
+      " and governments must continue to maintain essential services and infrastructure. Nevertheless, prioritising young people can ",
+      {t:"have a lasting influence on", k:'h', n:"«оказывать долговременное влияние на...»."},
+      " a country's ability to remain productive and competitive."
+    ],
+    [
+      "In conclusion, although governments ",
+      {t:"should not neglect other areas of public spending,", k:'h', n:"«не должны пренебрегать другими сферами государственных расходов»."},
+      " I believe that investing in young people is one of the most effective ways to prepare for the future. Providing them with strong education, practical skills and employment opportunities can ",
+      {t:"contribute to both individual success and the long-term prosperity of society", k:'h', n:"«способствовать как личному успеху, так и долгосрочному процветанию общества»."},
+      "."
+    ]
+  ],
+  glossary:[
+    {p:"devote resources to", t:"направлять ресурсы на"},
+    {p:"investment in the younger generation should be a priority", t:"инвестиции в молодое поколение должны быть приоритетом"},
+    {p:"create a skilled workforce and contribute to long-term development", t:"создавать квалифицированную рабочую силу и способствовать долгосрочному развитию"},
+    {p:"equip them with the skills needed to succeed", t:"вооружать их навыками, необходимыми для успеха"},
+    {p:"government funding should be directed towards", t:"государственное финансирование следует направить на"},
+    {p:"acquire new skills, adapt to changing demands", t:"приобретать новые навыки, адаптироваться к меняющимся требованиям"},
+    {p:"encourage young adults to pursue demanding careers", t:"побуждать молодых людей выбирать требовательные карьеры"},
+    {p:"develop a highly skilled workforce capable of supporting future economic growth", t:"развивать высококвалифицированную рабочую силу, способную поддерживать будущий рост"},
+    {p:"secure stable employment and become financially independent", t:"обеспечить себе стабильную занятость и стать финансово независимыми"},
+    {p:"contribute to the economy through taxation and consumer spending", t:"вносить вклад в экономику через налоги и потребительские расходы"},
+    {p:"better placed to develop new ideas and respond to future challenges", t:"в лучшем положении, чтобы разрабатывать новые идеи и реагировать на будущие вызовы"},
+    {p:"unlikely to guarantee a country's future prosperity", t:"вряд ли гарантирует будущее процветание страны"},
+    {p:"have a lasting influence on", t:"оказывать долговременное влияние на"},
+    {p:"should not neglect other areas of public spending", t:"не должны пренебрегать другими сферами государственных расходов"},
+    {p:"contribute to both individual success and the long-term prosperity of society", t:"способствовать и личному успеху, и долгосрочному процветанию общества"}
+  ]
+},
+{
+  id:'work-hard',
+  navRu:'Усердие в работе',
+  title:'Why are some people more willing to work hard than others?',
+  prompt:'Почему одни люди готовы усердно трудиться больше, чем другие?',
+  paragraphs:[
+    [
+      "The question of why some people are more willing to work hard than others has become a subject of considerable debate. While ",
+      {t:"financial rewards and opportunities for career progression can provide powerful incentives,", k:'h', n:"«финансовое вознаграждение и возможности карьерного роста могут быть мощными стимулами»."},
+      " I believe that working hard is beneficial only when ",
+      {t:"workloads remain within reasonable limits", k:'h', n:"«рабочая нагрузка остаётся в разумных пределах»."},
+      "."
+    ],
+    [
+      "There are several reasons why people are willing to work harder. First of all, many have ",
+      {t:"a strong desire to succeed,", k:'h', n:"«сильное желание добиться успеха»."},
+      " while a competitive salary and ",
+      {t:"the possibility of a modest pay rise", k:'h', n:"«возможность скромного повышения зарплаты»."},
+      " can also provide powerful incentives to perform well. Employees may also work harder and ",
+      {t:"sustain their productivity", k:'h', n:"«поддерживать свою продуктивность»."},
+      " when there is ",
+      {t:"a realistic prospect of promotion,", k:'h', n:"«реальная перспектива повышения»."},
+      " as this provides opportunities for professional growth and makes them aware that ",
+      {t:"good performance is likely to be rewarded", k:'h', n:"«хорошие результаты, скорее всего, будут вознаграждены»."},
+      ". Consequently, they are more willing to ",
+      {t:"put greater effort into their work,", k:'h', n:"«вкладывать больше усилий в работу»."},
+      " which can help them ",
+      {t:"achieve outstanding results", k:'h', n:"«достигать выдающихся результатов»."},
+      "."
+    ],
+    [
+      "Despite these potential benefits, I believe that excessive workloads can ",
+      {t:"have a negative impact on people's lives,", k:'h', n:"«оказывать негативное влияние на жизнь людей»."},
+      " particularly when they exceed reasonable limits. In highly competitive job markets, ",
+      {t:"employees may feel obliged to work long hours", k:'h', n:"«сотрудники могут чувствовать себя обязанными работать подолгу»."},
+      ". As a result, workers can ",
+      {t:"become physically exhausted and remain under considerable stress", k:'h', n:"«становиться физически истощёнными и оставаться в состоянии сильного стресса»."},
+      ". In addition, they may ",
+      {t:"neglect their health and relationships,", k:'h', n:"«пренебрегать своим здоровьем и отношениями»."},
+      " both of which ",
+      {t:"play a crucial role in maintaining their physical and mental well-being", k:'h', n:"«играют решающую роль в поддержании физического и психического благополучия»."},
+      ". Employers should therefore reduce excessive workloads and allow employees sufficient time to rest in order to maintain productivity, as this is essential for achieving consistently strong results."
+    ],
+    [
+      "In conclusion, people may be motivated to work harder by financial rewards, professional growth and a strong desire to succeed. Although ",
+      {t:"sustained effort can contribute to career success,", k:'h', n:"«устойчивые усилия могут способствовать карьерному успеху»."},
+      " ",
+      {t:"excessive workloads are ultimately counterproductive", k:'h', n:"«чрезмерные нагрузки в конечном итоге контрпродуктивны»."},
+      " when they undermine employees' health, relationships and long-term productivity."
+    ]
+  ],
+  glossary:[
+    {p:"financial rewards and opportunities for career progression", t:"финансовое вознаграждение и возможности карьерного роста"},
+    {p:"workloads remain within reasonable limits", t:"рабочая нагрузка остаётся в разумных пределах"},
+    {p:"a strong desire to succeed", t:"сильное желание добиться успеха"},
+    {p:"the possibility of a modest pay rise", t:"возможность скромного повышения зарплаты"},
+    {p:"sustain their productivity", t:"поддерживать свою продуктивность"},
+    {p:"a realistic prospect of promotion", t:"реальная перспектива повышения"},
+    {p:"good performance is likely to be rewarded", t:"хорошие результаты, скорее всего, будут вознаграждены"},
+    {p:"put greater effort into their work", t:"вкладывать больше усилий в работу"},
+    {p:"achieve outstanding results", t:"достигать выдающихся результатов"},
+    {p:"have a negative impact on people's lives", t:"оказывать негативное влияние на жизнь людей"},
+    {p:"feel obliged to work long hours", t:"чувствовать себя обязанными работать подолгу"},
+    {p:"become physically exhausted and remain under considerable stress", t:"становиться физически истощёнными и переживать сильный стресс"},
+    {p:"neglect their health and relationships", t:"пренебрегать своим здоровьем и отношениями"},
+    {p:"play a crucial role in maintaining well-being", t:"играть решающую роль в поддержании благополучия"},
+    {p:"excessive workloads are ultimately counterproductive", t:"чрезмерные нагрузки в конечном итоге контрпродуктивны"}
+  ]
 }
+
 ];
 
 // ---- task 1 structures data ------------------------------------------------
@@ -966,6 +1246,7 @@ const task1Categories = [
      n:"в отличие от A, где показатели были равными, E показал более разнородное распределение."}
   ]
 }
+
 ];
 
 function renderTask1(){
@@ -1029,6 +1310,32 @@ function resetNote(){
   noteText.innerHTML = '<span class="notebar-hint">Нажмите на выделенный текст, чтобы увидеть перевод или объяснение</span>';
 }
 
+function renderPlainText(container, text){
+  const re = /([A-Za-z']+)|([^A-Za-z']+)/g;
+  let m;
+  while((m = re.exec(text)) !== null){
+    if(m[1]){
+      const word = m[1];
+      const key = word.toLowerCase();
+      const tr = wordDict[key];
+      if(tr){
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.textContent = word;
+        span.tabIndex = 0;
+        const seg = {t:word, n:tr};
+        span.addEventListener('click', ()=>showNote(span, seg));
+        span.addEventListener('keypress', (ev)=>{ if(ev.key==='Enter') showNote(span, seg); });
+        container.appendChild(span);
+      } else {
+        container.appendChild(document.createTextNode(word));
+      }
+    } else if(m[2]){
+      container.appendChild(document.createTextNode(m[2]));
+    }
+  }
+}
+
 function selectEssay(i){
   const e = essays[i];
   titleEl.textContent = e.title;
@@ -1039,7 +1346,7 @@ function selectEssay(i){
     const p = document.createElement('p');
     paragraph.forEach(seg=>{
       if(typeof seg === 'string'){
-        p.appendChild(document.createTextNode(seg));
+        renderPlainText(p, seg);
       } else {
         const span = document.createElement('span');
         span.className = 'mark mark-' + seg.k;
