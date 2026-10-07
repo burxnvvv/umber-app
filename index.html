@@ -178,6 +178,79 @@
     line-height:1.5;
   }
 
+  /* ---------- body-paragraph bank ---------- */
+  #paragraphsView{max-width:1040px;margin:0 auto;padding:0 20px 140px;}
+  .bp-item{
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:12px;
+    background:var(--panel);
+    overflow:hidden;
+  }
+  .bp-item summary{
+    list-style:none;
+    cursor:pointer;
+    padding:14px 18px;
+    display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  }
+  .bp-item summary::-webkit-details-marker{display:none;}
+  .bp-num{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--gold);
+    font-size:0.95rem;
+    flex:none;
+  }
+  .bp-title{
+    font-family:var(--serif);
+    font-weight:600;
+    color:var(--text);
+    font-size:1.02rem;
+    flex:1;
+  }
+  .bp-refs{
+    font-family:var(--sans);
+    font-size:0.76rem;
+    color:var(--text-faint);
+  }
+  .bp-item summary::after{
+    content:"+";
+    font-family:var(--sans);
+    color:var(--text-faint);
+    font-size:1.1rem;
+    margin-left:auto;
+  }
+  .bp-item[open] summary::after{content:"–";}
+  .bp-body{padding:4px 18px 18px;}
+  .bp-body p{
+    font-family:var(--serif);
+    font-size:1.03rem;
+    line-height:1.72;
+    color:var(--text);
+    margin:0 0 14px;
+  }
+  .bp-glossary{
+    border-top:1px solid var(--line);
+    padding-top:12px;
+  }
+  .bp-glossary h3{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:600;
+    color:var(--gold);
+    font-size:1rem;
+    margin:0 0 10px;
+  }
+  .bp-glossary ol{
+    margin:0;padding-left:1.3em;
+    color:var(--text-dim);
+  }
+  .bp-glossary li{
+    margin-bottom:8px;
+    line-height:1.55;
+    font-size:0.9rem;
+  }
+
   /* ---------- layout ---------- */
   .layout{
     max-width:1040px;width:100%;
@@ -396,12 +469,16 @@
   </div>
   <div class="mode-switch" id="modeSwitch">
     <button id="modeEssays" class="mode-btn active">Эссе · Task 2</button>
+    <button id="modeParagraphs" class="mode-btn">Абзацы · Task 2</button>
     <button id="modeTask1" class="mode-btn">Структуры · Task 1</button>
   </div>
   <div class="legend" id="legendEssays">
     <span><span class="swatch h" aria-hidden="true"></span> заливка — объяснение фразы</span>
     <span><span class="swatch u" aria-hidden="true"></span> пунктир — перевод слова</span>
     <span>Любое слово тоже можно нажать — покажет перевод внизу</span>
+  </div>
+  <div class="legend" id="legendParagraphs" hidden>
+    <span>Готовые боди-абзацы для Task 2, сгруппированы по темам — разворачивай нужный, выделенные фразы и любое слово нажимаются</span>
   </div>
   <div class="legend" id="legendTask1" hidden>
     <span>Готовые формулы для описания графиков и диаграмм — сгруппированы по темам, каждая с примером и переводом</span>
@@ -422,6 +499,7 @@
   </main>
 </div>
 
+<div id="paragraphsView" hidden></div>
 <div id="task1View" hidden></div>
 
 <footer>Umber · личный тренажёр по письму для подготовки к IELTS</footer>
@@ -1057,6 +1135,382 @@ const essays = [
 
 ];
 
+// ---- Task 2 body-paragraph bank --------------------------------------------
+const bodyParagraphs = [
+{
+  num:'1', titleRu:'Время ограничено', refs:'12, 15, 91',
+  paragraph:[
+    "The time available for education is limited, and ",
+    {t:"every hour spent on additional subjects", k:'h', n:"«каждый час, потраченный на дополнительные предметы»."},
+    " is an ",
+    {t:"hour taken away from core knowledge", k:'h', n:"«час, отнятый у базовых знаний»."},
+    ". Students ",
+    {t:"already face heavy workloads,", k:'h', n:"«и так сталкиваются с большой нагрузкой»."},
+    " and ",
+    {t:"adding more compulsory subjects", k:'h', n:"«добавление ещё обязательных предметов»."},
+    " may ",
+    {t:"leave them exhausted", k:'h', n:"«оставляет их измотанными»."},
+    " and unable to master any area properly. For instance, a student preparing for medicine or engineering ",
+    {t:"needs every available hour", k:'h', n:"«нуждается в каждом свободном часе»."},
+    " for subjects such as chemistry, mathematics and physics. Therefore, it is ",
+    {t:"more sensible to allow", k:'h', n:"«разумнее позволить»."},
+    " students to focus on the areas ",
+    {t:"most relevant to their future careers", k:'h', n:"«наиболее актуальные для их будущей карьеры»."},
+    "."
+  ],
+  glossary:[
+    {p:"every hour spent on additional subjects", t:"каждый час, потраченный на дополнительные предметы"},
+    {p:"an hour taken away from core knowledge", t:"час, отнятый у базовых знаний"},
+    {p:"already face heavy workloads", t:"и так сталкиваются с большой нагрузкой"},
+    {p:"adding more compulsory subjects", t:"добавление ещё обязательных предметов"},
+    {p:"leave them exhausted", t:"оставляет их измотанными"},
+    {p:"needs every available hour", t:"нуждается в каждом свободном часе"},
+    {p:"more sensible to allow", t:"разумнее позволить"},
+    {p:"most relevant to their future careers", t:"наиболее актуальные для их будущей карьеры"}
+  ]
+},
+{
+  num:'2', titleRu:'Широкое образование', refs:'12, 15, 91',
+  paragraph:[
+    "A broader education, including subjects ",
+    {t:"beyond the traditional academic core,", k:'h', n:"«за рамками традиционного академического ядра»."},
+    " produces more ",
+    {t:"creative and adaptable people", k:'h', n:"«творческие и легко адаптирующиеся люди»."},
+    ". Employers increasingly value skills such as creativity, communication and ",
+    {t:"practical problem-solving", k:'h', n:"«практическое решение проблем»."},
+    ", which are rarely developed by studying a single subject. For instance, many successful entrepreneurs and engineers ",
+    {t:"credit their achievements to", k:'h', n:"«приписывают свои достижения...» (чему-то)."},
+    " interests outside their main field, such as art, design or ",
+    {t:"hands-on work", k:'h', n:"«практическая, „ручная“ работа»."},
+    ". Consequently, studying a wider range of subjects ",
+    {t:"prepares young people far better for", k:'h', n:"«готовит молодых людей гораздо лучше к...»."},
+    " ",
+    {t:"a rapidly changing world", k:'h', n:"«быстро меняющийся мир»."},
+    "."
+  ],
+  glossary:[
+    {p:"beyond the traditional academic core", t:"за рамками традиционного академического ядра"},
+    {p:"creative and adaptable people", t:"творческие и легко адаптирующиеся люди"},
+    {p:"practical problem-solving", t:"практическое решение проблем"},
+    {p:"credit their achievements to", t:"приписывают свои достижения (чему-то)"},
+    {p:"hands-on work", t:"практическая, «ручная» работа"},
+    {p:"prepares young people far better for", t:"готовит молодых людей гораздо лучше к"},
+    {p:"a rapidly changing world", t:"быстро меняющийся мир"}
+  ]
+},
+{
+  num:'3', titleRu:'Опыт работы', refs:'13, 14, 97',
+  paragraph:[
+    "Work experience, ",
+    {t:"whether paid or voluntary,", k:'h', n:"«платный он или волонтёрский»."},
+    " develops ",
+    {t:"qualities that no classroom can teach", k:'h', n:"«качества, которым не научит ни один класс»."},
+    ". Young people who work ",
+    {t:"learn to be punctual,", k:'h', n:"«учатся быть пунктуальными»."},
+    " to ",
+    {t:"take responsibility", k:'h', n:"«брать на себя ответственность»."},
+    " and to cooperate with colleagues and customers. For instance, a teenager who spends a year working in a shop or helping at a local charity quickly learns how to ",
+    {t:"deal with real problems and difficult people", k:'h', n:"«справляться с реальными проблемами и трудными людьми»."},
+    ". As a result, they ",
+    {t:"enter university or employment more mature", k:'h', n:"«вступают в университет или на работу более зрелыми»."},
+    " and better prepared for adult life."
+  ],
+  glossary:[
+    {p:"whether paid or voluntary", t:"платный он или волонтёрский"},
+    {p:"qualities that no classroom can teach", t:"качества, которым не научит ни один класс"},
+    {p:"learn to be punctual", t:"учатся быть пунктуальными"},
+    {p:"take responsibility", t:"брать на себя ответственность"},
+    {p:"deal with real problems and difficult people", t:"справляться с реальными проблемами и трудными людьми"},
+    {p:"enter university or employment more mature", t:"вступают в университет или на работу более зрелыми"}
+  ]
+},
+{
+  num:'3a', titleRu:'Опыт работы и деньги', refs:'92',
+  paragraph:[
+    "Work experience, whether paid or voluntary, develops qualities that no classroom can teach. Young people who work learn to be punctual, to take responsibility and to ",
+    {t:"manage their own money", k:'h', n:"«распоряжаться собственными деньгами»."},
+    ". For instance, a teenager who spends a year working in a shop quickly learns ",
+    {t:"how much effort it takes to earn money", k:'h', n:"«сколько усилий нужно, чтобы заработать деньги»."},
+    " and how quickly it can be spent. As a result, they enter adult life ",
+    {t:"far better prepared to handle their finances", k:'h', n:"«гораздо лучше подготовлены к управлению своими финансами»."},
+    "."
+  ],
+  glossary:[
+    {p:"manage their own money", t:"распоряжаться собственными деньгами"},
+    {p:"how much effort it takes to earn money", t:"сколько усилий нужно, чтобы заработать деньги"},
+    {p:"far better prepared to handle their finances", t:"гораздо лучше подготовлены к управлению своими финансами"}
+  ]
+},
+{
+  num:'4', titleRu:'Жизнь за границей', refs:'13, 14, 98',
+  paragraph:[
+    "Spending time in another country ",
+    {t:"broadens young people's horizons", k:'h', n:"«расширяет кругозор молодых людей»."},
+    " ",
+    {t:"in a way that no textbook can", k:'h', n:"«так, как не сможет ни один учебник»."},
+    ". Living among ",
+    {t:"people with different customs", k:'h', n:"«люди с другими обычаями»."},
+    " forces them to become ",
+    {t:"independent, adaptable and more tolerant", k:'h', n:"«самостоятельными, легко адаптирующимися и более терпимыми»."},
+    ". For instance, a student who has had to find accommodation, make friends and communicate in a foreign language abroad ",
+    {t:"gains confidence that lasts a lifetime", k:'h', n:"«обретает уверенность на всю жизнь»."},
+    ". Moreover, such experience greatly improves language skills, which are ",
+    {t:"highly valued by employers", k:'h', n:"«высоко ценится работодателями»."},
+    "."
+  ],
+  glossary:[
+    {p:"broadens young people's horizons", t:"расширяет кругозор молодых людей"},
+    {p:"in a way that no textbook can", t:"так, как не сможет ни один учебник"},
+    {p:"people with different customs", t:"люди с другими обычаями"},
+    {p:"independent, adaptable and more tolerant", t:"самостоятельными, легко адаптирующимися и более терпимыми"},
+    {p:"gains confidence that lasts a lifetime", t:"обретает уверенность на всю жизнь"},
+    {p:"highly valued by employers", t:"высоко ценится работодателями"}
+  ]
+},
+{
+  num:'4a', titleRu:'Жизнь за границей (для взрослых и семей)', refs:'5, 59',
+  paragraph:[
+    "Spending time in another country ",
+    {t:"broadens people's horizons", k:'h', n:"«расширяет кругозор людей» — универсальная версия без привязки к возрасту."},
+    " in a way that no textbook can. Living among people with different customs forces them to become independent, adaptable and more tolerant. For instance, someone who has had to find accommodation, make friends and communicate in a foreign language abroad gains confidence that lasts a lifetime. Moreover, such experience greatly improves language skills, which are highly valued by employers."
+  ],
+  glossary:[
+    {p:"broadens people's horizons", t:"расширяет кругозор людей (универсальная версия без возрастной привязки)"}
+  ]
+},
+{
+  num:'5', titleRu:'Зрелость и готовность', refs:'14, 101',
+  paragraph:[
+    "Starting ",
+    {t:"a new stage of education", k:'h', n:"«новый этап образования»."},
+    " when a person is more mature often leads to better results. Those who are ",
+    {t:"emotionally ready", k:'h', n:"«эмоционально готовы»."},
+    " tend to be more motivated, more focused and better able to ",
+    {t:"cope with pressure", k:'h', n:"«справляться с давлением, нагрузкой»."},
+    ". For instance, teachers frequently notice that the older students in a class concentrate better and ",
+    {t:"take their studies more seriously", k:'h', n:"«относятся к учёбе серьёзнее»."},
+    " than the youngest. Therefore, ",
+    {t:"a slightly later start", k:'h', n:"«чуть более поздний старт»."},
+    " can be ",
+    {t:"an advantage rather than a delay", k:'h', n:"«преимущество, а не задержка»."},
+    "."
+  ],
+  glossary:[
+    {p:"a new stage of education", t:"новый этап образования"},
+    {p:"emotionally ready", t:"эмоционально готовы"},
+    {p:"cope with pressure", t:"справляться с давлением/нагрузкой"},
+    {p:"take their studies more seriously", t:"относятся к учёбе серьёзнее"},
+    {p:"a slightly later start", t:"чуть более поздний старт"},
+    {p:"an advantage rather than a delay", t:"преимущество, а не задержка"}
+  ]
+},
+{
+  num:'6', titleRu:'Без структуры учёба разваливается', refs:'14, 25, 95',
+  paragraph:[
+    "Without ",
+    {t:"a fixed timetable", k:'h', n:"«чёткое расписание»."},
+    " and ",
+    {t:"someone checking their progress,", k:'h', n:"«кто-то, проверяющий их прогресс»."},
+    " many people find it extremely difficult to study effectively. ",
+    {t:"Learning is a habit,", k:'h', n:"«учёба — это привычка»."},
+    " and once ",
+    {t:"the daily routine", k:'h', n:"«ежедневный распорядок»."},
+    " of classes and deadlines disappears, motivation ",
+    {t:"tends to disappear with it", k:'h', n:"«обычно исчезает вместе с этим»."},
+    ". For instance, a learner who has no one to remind them about assignments may ",
+    {t:"postpone work again and again", k:'h', n:"«откладывать работу снова и снова»."},
+    " until it is too late. As a result, only those with ",
+    {t:"exceptional self-discipline", k:'h', n:"«исключительная самодисциплина»."},
+    " manage to succeed ",
+    {t:"in such conditions", k:'h', n:"«в таких условиях»."},
+    "."
+  ],
+  glossary:[
+    {p:"a fixed timetable", t:"чёткое расписание"},
+    {p:"someone checking their progress", t:"кто-то, проверяющий их прогресс"},
+    {p:"Learning is a habit", t:"учёба — это привычка"},
+    {p:"the daily routine", t:"ежедневный распорядок"},
+    {p:"tends to disappear with it", t:"обычно исчезает вместе с этим"},
+    {p:"postpone work again and again", t:"откладывать работу снова и снова"},
+    {p:"exceptional self-discipline", t:"исключительная самодисциплина"},
+    {p:"in such conditions", t:"в таких условиях"}
+  ]
+},
+{
+  num:'6a', titleRu:'Без структуры работа разваливается', refs:'6',
+  paragraph:[
+    "Without a fixed timetable and someone checking their progress, many people find it extremely difficult ",
+    {t:"to work effectively", k:'h', n:"«работать эффективно»."},
+    ". ",
+    {t:"Productivity is a habit,", k:'h', n:"«продуктивность — это привычка»."},
+    " and once the daily routine of ",
+    {t:"the office", k:'h', n:"«офис» (в контексте: распорядок офиса)."},
+    " and deadlines disappears, motivation tends to disappear with it. For instance, ",
+    {t:"an employee who has no one to remind them", k:'h', n:"«сотрудник, которого некому напомнить»."},
+    " about tasks may postpone work again and again until it is too late. As a result, only those with exceptional self-discipline manage to succeed in such conditions."
+  ],
+  glossary:[
+    {p:"to work effectively", t:"работать эффективно"},
+    {p:"Productivity is a habit", t:"продуктивность — это привычка"},
+    {p:"the daily routine of the office", t:"распорядок офиса"},
+    {p:"an employee who has no one to remind them", t:"сотрудник, которого некому напомнить"}
+  ]
+},
+{
+  num:'7', titleRu:'Роль учителя', refs:'22, 25',
+  paragraph:[
+    "A qualified teacher ",
+    {t:"offers advantages that self-study cannot replace", k:'h', n:"«даёт преимущества, которые самостоятельные занятия заменить не могут»."},
+    ". Teachers ",
+    {t:"provide clear structure,", k:'h', n:"«обеспечивают чёткую структуру»."},
+    " ",
+    {t:"explain difficult points in different ways", k:'h', n:"«объясняют сложные моменты разными способами»."},
+    " and ",
+    {t:"correct mistakes before they become habits", k:'h', n:"«исправляют ошибки до того, как они станут привычкой»."},
+    ". For instance, a learner using online videos may ",
+    {t:"repeat the same error for months", k:'h', n:"«повторять одну и ту же ошибку месяцами»."},
+    " without realising it, whereas a teacher would ",
+    {t:"notice and correct it immediately", k:'h', n:"«замечает и исправляет это немедленно»."},
+    ". Moreover, professional teachers ",
+    {t:"have specialist knowledge", k:'h', n:"«обладают специализированными знаниями»."},
+    " of their subjects, which ",
+    {t:"most parents and self-learners lack", k:'h', n:"«чего не хватает большинству родителей и самоучек»."},
+    "."
+  ],
+  glossary:[
+    {p:"offers advantages that self-study cannot replace", t:"даёт преимущества, которые самостоятельные занятия заменить не могут"},
+    {p:"provide clear structure", t:"обеспечивают чёткую структуру"},
+    {p:"explain difficult points in different ways", t:"объясняют сложные моменты разными способами"},
+    {p:"correct mistakes before they become habits", t:"исправляют ошибки до того, как они станут привычкой"},
+    {p:"repeat the same error for months", t:"повторять одну и ту же ошибку месяцами"},
+    {p:"notice and correct it immediately", t:"замечает и исправляет это немедленно"},
+    {p:"have specialist knowledge", t:"обладают специализированными знаниями"},
+    {p:"most parents and self-learners lack", t:"чего не хватает большинству родителей и самоучек"}
+  ]
+},
+{
+  num:'8', titleRu:'Свой темп', refs:'22, 23, 25, 93',
+  paragraph:[
+    "Learning individually allows a person to ",
+    {t:"work at their own pace", k:'h', n:"«работать в своём темпе»."},
+    " and ",
+    {t:"concentrate on exactly what they find difficult", k:'h', n:"«сосредоточиться именно на том, что им даётся сложно»."},
+    ". In a large class or group, ",
+    {t:"the speed is set by the majority,", k:'h', n:"«скорость задаётся большинством»."},
+    " so ",
+    {t:"faster learners become bored", k:'h', n:"«более быстрые ученики начинают скучать»."},
+    " while ",
+    {t:"slower ones fall behind", k:'h', n:"«более медленные отстают»."},
+    ". For instance, a student who ",
+    {t:"struggles with mathematics but excels in languages", k:'h', n:"«испытывает трудности с математикой, но преуспевает в языках»."},
+    " can spend more time on the first and move quickly through the second. As a result, individual learning is often ",
+    {t:"more efficient and less stressful", k:'h', n:"«более эффективно и менее напряжённо»."},
+    "."
+  ],
+  glossary:[
+    {p:"work at their own pace", t:"работать в своём темпе"},
+    {p:"concentrate on exactly what they find difficult", t:"сосредоточиться именно на том, что им даётся сложно"},
+    {p:"the speed is set by the majority", t:"скорость задаётся большинством"},
+    {p:"faster learners become bored", t:"более быстрые ученики начинают скучать"},
+    {p:"slower ones fall behind", t:"более медленные отстают"},
+    {p:"struggles with mathematics but excels in languages", t:"испытывает трудности с математикой, но преуспевает в языках"},
+    {p:"more efficient and less stressful", t:"более эффективно и менее напряжённо"}
+  ]
+},
+{
+  num:'9', titleRu:'Социальные навыки и командная работа', refs:'22, 23, 93, 101',
+  paragraph:[
+    "Learning alongside others develops ",
+    {t:"social and teamwork skills", k:'h', n:"«социальные и командные навыки»."},
+    " that are ",
+    {t:"essential in adult life", k:'h', n:"«необходимы во взрослой жизни»."},
+    ". Working in a group teaches people to ",
+    {t:"listen, share ideas, resolve disagreements", k:'h', n:"«слушать, делиться идеями, разрешать разногласия»."},
+    " and ",
+    {t:"take responsibility as part of a team", k:'h', n:"«брать на себя ответственность как часть команды»."},
+    ". For instance, children who regularly work on projects with classmates learn to communicate and ",
+    {t:"cooperate far better", k:'h', n:"«сотрудничать гораздо лучше»."},
+    " than those who always study alone. Consequently, these skills ",
+    {t:"give them a clear advantage", k:'h', n:"«даёт им явное преимущество»."},
+    " in their future careers, where ",
+    {t:"almost every job involves working with others", k:'h', n:"«почти любая работа предполагает взаимодействие с другими»."},
+    "."
+  ],
+  glossary:[
+    {p:"social and teamwork skills", t:"социальные и командные навыки"},
+    {p:"essential in adult life", t:"необходимы во взрослой жизни"},
+    {p:"listen, share ideas, resolve disagreements", t:"слушать, делиться идеями, разрешать разногласия"},
+    {p:"take responsibility as part of a team", t:"брать на себя ответственность как часть команды"},
+    {p:"cooperate far better", t:"сотрудничать гораздо лучше"},
+    {p:"give them a clear advantage", t:"даёт им явное преимущество"},
+    {p:"almost every job involves working with others", t:"почти любая работа предполагает взаимодействие с другими"}
+  ]
+},
+{
+  num:'9a', titleRu:'Командный спорт', refs:'69',
+  paragraph:[
+    "Team sports develop social and teamwork skills that are essential in adult life. ",
+    {t:"Playing in a team", k:'h', n:"«играя в команде»."},
+    " teaches people to listen, share ideas, resolve disagreements and take responsibility as part of a team. For instance, children who regularly play football or basketball learn to communicate and cooperate far better than those who always spend their free time alone. Consequently, these skills give them a clear advantage in their future careers, where almost every job involves working with others."
+  ],
+  glossary:[
+    {p:"Playing in a team", t:"играя в команде"},
+    {p:"spend their free time alone", t:"проводить свободное время в одиночестве"}
+  ]
+},
+{
+  num:'10', titleRu:'Минусы групповой работы', refs:'23, 93',
+  paragraph:[
+    "Group work, however, ",
+    {t:"has a number of drawbacks", k:'h', n:"«имеет ряд недостатков»."},
+    ". Discussions often ",
+    {t:"drift away from the topic,", k:'h', n:"«уходить в сторону от темы»."},
+    " and ",
+    {t:"the loudest members tend to dominate", k:'h', n:"«самые громкие участники, как правило, доминируют»."},
+    " while ",
+    {t:"quieter ones remain silent", k:'h', n:"«более тихие остаются молчаливыми»."},
+    ". For instance, in many student projects, one or two people do most of the work while the others ",
+    {t:"simply rely on them", k:'h', n:"«просто полагаются на них»."},
+    ". As a result, group activities ",
+    {t:"do not always guarantee", k:'h', n:"«не всегда гарантируют»."},
+    " that every member actually learns."
+  ],
+  glossary:[
+    {p:"has a number of drawbacks", t:"имеет ряд недостатков"},
+    {p:"drift away from the topic", t:"уходить в сторону от темы"},
+    {p:"the loudest members tend to dominate", t:"самые громкие участники, как правило, доминируют"},
+    {p:"quieter ones remain silent", t:"более тихие остаются молчаливыми"},
+    {p:"simply rely on them", t:"просто полагаются на них"},
+    {p:"do not always guarantee", t:"не всегда гарантируют"}
+  ]
+}
+];
+
+function renderParagraphsBank(){
+  const root = document.getElementById('paragraphsView');
+  root.innerHTML = '';
+  bodyParagraphs.forEach((bp, i)=>{
+    const det = document.createElement('details');
+    det.className = 'bp-item';
+    if(i===0) det.open = true;
+    const sum = document.createElement('summary');
+    sum.innerHTML = '<span class="bp-num">' + bp.num + '.</span> <span class="bp-title">' + bp.titleRu + '</span> <span class="bp-refs">стр. ' + bp.refs + '</span>';
+    det.appendChild(sum);
+    const body = document.createElement('div');
+    body.className = 'bp-body';
+    const p = document.createElement('p');
+    renderSegmentsIntoP(p, bp.paragraph);
+    body.appendChild(p);
+    const gloss = document.createElement('div');
+    gloss.className = 'bp-glossary';
+    renderGlossaryInto(gloss, bp.glossary, 'Ключевые выражения');
+    body.appendChild(gloss);
+    det.appendChild(body);
+    root.appendChild(det);
+  });
+}
+
+
 // ---- task 1 structures data ------------------------------------------------
 const task1Categories = [
 {
@@ -1336,6 +1790,39 @@ function renderPlainText(container, text){
   }
 }
 
+function renderSegmentsIntoP(p, segments){
+  segments.forEach(seg=>{
+    if(typeof seg === 'string'){
+      renderPlainText(p, seg);
+    } else {
+      const span = document.createElement('span');
+      span.className = 'mark mark-' + seg.k;
+      span.textContent = seg.t;
+      span.tabIndex = 0;
+      span.dataset.note = seg.n;
+      span.addEventListener('click', ()=>showNote(span, seg));
+      span.addEventListener('keypress', (ev)=>{ if(ev.key==='Enter') showNote(span, seg); });
+      p.appendChild(span);
+    }
+  });
+}
+
+function renderGlossaryInto(container, items, heading){
+  container.innerHTML = '';
+  if(items && items.length){
+    const h3 = document.createElement('h3');
+    h3.textContent = heading || 'Ключевые выражения';
+    container.appendChild(h3);
+    const ol = document.createElement('ol');
+    items.forEach(item=>{
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="g-phrase">' + item.p + '</span><span class="g-dash"> — </span>' + item.t;
+      ol.appendChild(li);
+    });
+    container.appendChild(ol);
+  }
+}
+
 function selectEssay(i){
   const e = essays[i];
   titleEl.textContent = e.title;
@@ -1344,37 +1831,11 @@ function selectEssay(i){
 
   e.paragraphs.forEach(paragraph=>{
     const p = document.createElement('p');
-    paragraph.forEach(seg=>{
-      if(typeof seg === 'string'){
-        renderPlainText(p, seg);
-      } else {
-        const span = document.createElement('span');
-        span.className = 'mark mark-' + seg.k;
-        span.textContent = seg.t;
-        span.tabIndex = 0;
-        span.dataset.note = seg.n;
-        span.addEventListener('click', ()=>showNote(span, seg));
-        span.addEventListener('keypress', (ev)=>{ if(ev.key==='Enter') showNote(span, seg); });
-        p.appendChild(span);
-      }
-    });
+    renderSegmentsIntoP(p, paragraph);
     bodyEl.appendChild(p);
   });
 
-  const glossEl = document.getElementById('essayGlossary');
-  glossEl.innerHTML = '';
-  if(e.glossary && e.glossary.length){
-    const h3 = document.createElement('h3');
-    h3.textContent = 'Ключевые выражения';
-    glossEl.appendChild(h3);
-    const ol = document.createElement('ol');
-    e.glossary.forEach(item=>{
-      const li = document.createElement('li');
-      li.innerHTML = '<span class="g-phrase">' + item.p + '</span><span class="g-dash"> — </span>' + item.t;
-      ol.appendChild(li);
-    });
-    glossEl.appendChild(ol);
-  }
+  renderGlossaryInto(document.getElementById('essayGlossary'), e.glossary, 'Ключевые выражения');
 
   [...tabsEl.children].forEach(b=>b.classList.toggle('active', +b.dataset.idx===i));
   [...chipEl.children].forEach(b=>b.classList.toggle('active', +b.dataset.idx===i));
@@ -1395,37 +1856,42 @@ function showNote(span, seg){
 noteClose.addEventListener('click', resetNote);
 
 const modeEssaysBtn = document.getElementById('modeEssays');
+const modeParagraphsBtn = document.getElementById('modeParagraphs');
 const modeTask1Btn = document.getElementById('modeTask1');
 const essaysView = document.getElementById('essaysView');
+const paragraphsView = document.getElementById('paragraphsView');
 const task1View = document.getElementById('task1View');
 const legendEssays = document.getElementById('legendEssays');
+const legendParagraphs = document.getElementById('legendParagraphs');
 const legendTask1 = document.getElementById('legendTask1');
 const notebar = document.getElementById('notebar');
 
-modeEssaysBtn.addEventListener('click', ()=>{
-  modeEssaysBtn.classList.add('active');
-  modeTask1Btn.classList.remove('active');
-  essaysView.style.display = '';
-  task1View.style.display = 'none';
-  legendEssays.hidden = false;
-  legendTask1.hidden = true;
-  notebar.style.display = '';
+const modeButtons = [modeEssaysBtn, modeParagraphsBtn, modeTask1Btn];
+const modeViews = [essaysView, paragraphsView, task1View];
+const modeLegends = [legendEssays, legendParagraphs, legendTask1];
+
+function setMode(activeIndex){
+  modeButtons.forEach((b,i)=>b.classList.toggle('active', i===activeIndex));
+  modeViews.forEach((v,i)=>{
+    if(i===activeIndex){
+      v.removeAttribute('hidden');
+      v.style.display = (v===essaysView) ? '' : 'block';
+    } else {
+      v.style.display = 'none';
+    }
+  });
+  modeLegends.forEach((l,i)=>{ l.hidden = (i!==activeIndex); });
+  notebar.style.display = (activeIndex===2) ? 'none' : '';
   window.scrollTo({top:0, behavior:'smooth'});
-});
-modeTask1Btn.addEventListener('click', ()=>{
-  modeTask1Btn.classList.add('active');
-  modeEssaysBtn.classList.remove('active');
-  essaysView.style.display = 'none';
-  task1View.removeAttribute('hidden');
-  task1View.style.display = 'block';
-  legendEssays.hidden = true;
-  legendTask1.hidden = false;
-  notebar.style.display = 'none';
-  window.scrollTo({top:0, behavior:'smooth'});
-});
+}
+
+modeEssaysBtn.addEventListener('click', ()=>setMode(0));
+modeParagraphsBtn.addEventListener('click', ()=>setMode(1));
+modeTask1Btn.addEventListener('click', ()=>setMode(2));
 
 buildNav();
 selectEssay(0);
+renderParagraphsBank();
 renderTask1();
 </script>
 </body>
